@@ -3,17 +3,18 @@ import axios from "../api/axios";
 
 import ProductCard from "./ProductCard";
 
-export default function FilteredSection({ children }) {
+export default function FilteredSection({ children, filterLogic }) {
   // new products
   const [products, setProducts] = useState([]);
 
   const fetchProducts = () => {
     axios.get("/products").then((res) => {
-      setProducts(res.data);
+      const filteredProducts = filterLogic ? filterLogic(res.data) : res.data;
+      setProducts(filteredProducts);
     });
   };
 
-  useEffect(fetchProducts, []);
+  useEffect(fetchProducts, [filterLogic]);
 
   return (
     <div>
