@@ -11,12 +11,12 @@ export default function ProductCard({
 }) {
   return (
     <Link to={link} className="block">
-      <div className="flex flex-row gap-5 bg-white rounded-lg shadow-md p-4 my-4 w-100 h-60 mx-auto  border-gray-200 transform transition duration-300 hover:scale-105">
+      <div className="flex flex-row gap-5 bg-white rounded-lg shadow-md  my-4 w-100 h-60 mx-auto border-gray-200 transform transition duration-300 hover:scale-105">
         <div className="">
           <img
             src={`http://localhost:3000/imgs/${image}`}
             alt={name}
-            className="w-30 h-35 object-cover rounded-lg"
+            className="w-30 h-60 rounded-lg object-contain p-3"
           />
         </div>
         <div>
