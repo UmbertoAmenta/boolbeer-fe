@@ -1,19 +1,24 @@
-export default function ProductCard(newProduct) {
+export default function ProductCard(product) {
   return (
     <div className="flex gap-5 ">
       <div>
-        <img src={newProduct.image} alt={newProduct.name} />
+        <img
+          className="w-10 h-10"
+          src={`http://localhost:3000/imgs/${product.image}`}
+          alt={product.name}
+        />
       </div>
       <div>
         <h4>
-          {newProduct.name} ({newProduct.volume}ml)
+          {product.name} ({product.volume}ml)
         </h4>
         <ul>
-          <li>volume alcolico: {newProduct.abv}%</li>
-          <li>{newProduct.description}</li>
-          <li>prezzo: €{newProduct.price}</li>
+          <li>volume alcolico: {product.abv}%</li>
+          <li>{product.description}</li>
+          <li>prezzo: €{product.price}</li>
         </ul>
       </div>
+      <div>{`http://localhost:3000/imgs/brands/${product.brand_image}`}</div>
     </div>
   );
 }
