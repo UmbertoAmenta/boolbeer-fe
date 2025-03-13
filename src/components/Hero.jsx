@@ -22,16 +22,25 @@ export default function Hero() {
   };
 
   return (
-    <div>
-      <div>
-        <img
-          src={images[currentImageId]}
-          alt="404: Image not found"
-          className="w-full h-100 object-cover"
-        />
-      </div>
-      <button onClick={prevImageId}>Previous</button>
-      <button onClick={nextImageId}>Next</button>
+    <div className="relative">
+      <img
+        src={images[currentImageId]}
+        alt="404: Image not found"
+        className="w-full h-100 object-cover"
+      />
+      <button
+        className="absolute top-50 left-0 mx-2 p-2 hover:cursor-pointer bg-neutral-800 rounded-full text-white text-2xl"
+        onClick={prevImageId}
+      >
+        <i class="fa-solid fa-arrow-left"></i>
+      </button>
+
+      <button
+        className="absolute top-50 right-0 mx-2 p-3 hover:cursor-pointer bg-neutral-800 rounded-full text-white text-2xl"
+        onClick={nextImageId}
+      >
+        <i class="fa-solid fa-arrow-right"></i>
+      </button>
     </div>
   );
 }
