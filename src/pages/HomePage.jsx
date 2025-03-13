@@ -17,12 +17,14 @@ export default function HomePage() {
     // container
     <div>
       <Hero />
-      <FilteredSection filterLogic={filterNewestProducts}>
-        <h3>Gli ultimi arrivi</h3>
-      </FilteredSection>
-      <FilteredSection filterLogic={filterBestSellersProducts}>
-        <h3>I più venduti</h3>
-      </FilteredSection>
+      <div className="container mx-auto ">
+        <h2 className="text-2xl font-bold text-gray-800 mt-2">
+          Gli ultimi arrivi
+        </h2>
+        <FilteredSection filterLogic={filterNewestProducts} />
+        <h2 className="text-2xl font-bold text-gray-800 mt-2">I più venduti</h2>
+        <FilteredSection filterLogic={filterBestSellersProducts} />
+      </div>
     </div>
   );
 }

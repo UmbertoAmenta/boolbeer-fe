@@ -3,7 +3,7 @@ import axios from "../api/axios";
 
 import ProductCard from "./ProductCard";
 
-export default function FilteredSection({ children, filterLogic }) {
+export default function FilteredSection({ children, filterLogic, overflowX }) {
   // new products
   const [products, setProducts] = useState([]);
 
@@ -17,11 +17,23 @@ export default function FilteredSection({ children, filterLogic }) {
   useEffect(fetchProducts, [filterLogic]);
 
   return (
-    <div>
-      <div>{children}</div>
-      {products.map((product) => {
-        return <ProductCard key={product.id} {...product} />;
-      })}
+    <div className="container mx-auto overflow-x-auto mb-4">
+      <div className="flex flex-row max-width: 1000px; gap-4">
+        <div>{children}</div>
+        {products.map((product) => (
+          <div className="col" key={product.id}>
+            <ProductCard
+              name={product.name}
+              image={product.image}
+              volume={product.volume}
+              abv={product.abv}
+              description={product.description}
+              price={product.price}
+              link={`product/${product.id}`}
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
