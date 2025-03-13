@@ -32,14 +32,14 @@ export default function Hero() {
         className="absolute top-50 left-0 mx-2 p-2 hover:cursor-pointer bg-neutral-800 rounded-full text-white text-2xl"
         onClick={prevImageId}
       >
-        <i class="fa-solid fa-arrow-left"></i>
+        <i className="fa-solid fa-arrow-left"></i>
       </button>
 
       <button
         className="absolute top-50 right-0 mx-2 p-3 hover:cursor-pointer bg-neutral-800 rounded-full text-white text-2xl"
         onClick={nextImageId}
       >
-        <i class="fa-solid fa-arrow-right"></i>
+        <i className="fa-solid fa-arrow-right"></i>
       </button>
     </div>
   );
