@@ -56,7 +56,13 @@ export default function ProductPage() {
               </li>
             </ul>
             <div>Disponibile / Non disponibile</div>
-            <button type="button">Aggiungi al carrello</button>
+            <div>
+              <input type="number" max={99} />
+              <button type="button">Aggiungi</button>
+              <button type="button">
+                <i className="fa-solid fa-cart-shopping"></i>
+              </button>
+            </div>
           </div>
         </div>
       </div>
