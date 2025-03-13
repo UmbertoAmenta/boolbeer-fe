@@ -17,7 +17,7 @@ export default function FilteredSection({ children, filterLogic, overflowX }) {
   useEffect(fetchProducts, [filterLogic]);
 
   return (
-    <div className="container mx-auto overflow-x-auto mb-4">
+    <div className=" bg-orange-50 rounded-lg container mx-auto overflow-x-auto mb-">
       <div className="flex flex-row max-width: 1000px; gap-4">
         <div>{children}</div>
         {products.map((product) => (
