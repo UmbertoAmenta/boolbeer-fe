@@ -7,12 +7,58 @@ export default function ProductPage() {
         <Link to="/">
           <i className="fa-solid fa-arrow-left text-2xl mb-2"></i>
         </Link>
-        <p>
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sit
-          explicabo obcaecati corporis quibusdam ipsum commodi harum quos cumque
-          laudantium! Quis doloribus deserunt laudantium temporibus dolorem,
-          omnis esse. Expedita, repudiandae corrupti?
-        </p>
+        <div className="flex">
+          <div className="w-30 h-50">
+            <img src="#" alt="CH₃CH₂OH" />
+            <img src="#" alt="logo" />
+          </div>
+          <div>
+            <h3>
+              <strong>Titolo - volume</strong>
+            </h3>
+            <h2>prezzo</h2>
+            <ul>
+              <li>
+                <span className="inline-block w-35">
+                  <strong>Produttore:</strong>
+                </span>
+                <span>?</span>
+              </li>
+              <li>
+                <span className="inline-block w-35">
+                  <strong>Paese:</strong>
+                </span>
+                <span>?</span>
+              </li>
+              <li>
+                <span className="inline-block w-35">
+                  <strong>Stile:</strong>
+                </span>
+                <span>?</span>
+              </li>
+              <li>
+                <span className="inline-block w-35">
+                  <strong>% Alcol:</strong>
+                </span>
+                <span>?</span>
+              </li>
+              <li>
+                <span className="inline-block w-35">
+                  <strong>Colore:</strong>
+                </span>
+                <span>?</span>
+              </li>
+              <li>
+                <span className="inline-block w-35">
+                  <strong>Descrizione:</strong>
+                </span>
+                <span>?</span>
+              </li>
+            </ul>
+            <div>Disponibile / Non disponibile</div>
+            <button type="button">Aggiungi al carrello</button>
+          </div>
+        </div>
       </div>
     </div>
   );
