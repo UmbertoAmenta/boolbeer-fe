@@ -5,12 +5,14 @@ import FilteredSection from "../components/FilteredSection";
 export default function HomePage() {
   // filter: 10 newest products (by id)
   const filterNewestProducts = (products) => {
-    return products.sort((a, b) => b.id - a.id).slice(0, 10);
+    return products.sort((a, b) => b.product_id - a.product_id).slice(0, 10);
   };
 
   // filter: 10 best sellers
   const filterBestSellersProducts = (products) => {
-    return products.sort((a, b) => b.sales - a.sales).slice(0, 10);
+    return products
+      .sort((a, b) => b.total_quantity_sold - a.total_quantity_sold)
+      .slice(0, 10);
   };
 
   return (

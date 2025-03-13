@@ -8,8 +8,10 @@ export default function FilteredSection({ children, filterLogic, overflowX }) {
   const [products, setProducts] = useState([]);
 
   const fetchProducts = () => {
-    axios.get("/products").then((res) => {
-      const filteredProducts = filterLogic ? filterLogic(res.data) : res.data;
+    axios.get("/alldata").then((res) => {
+      const filteredProducts = filterLogic
+        ? filterLogic(res.data.products)
+        : res.data.products;
       setProducts(filteredProducts);
     });
   };
@@ -17,19 +19,19 @@ export default function FilteredSection({ children, filterLogic, overflowX }) {
   useEffect(fetchProducts, [filterLogic]);
 
   return (
-    <div className=" bg-orange-50 rounded-lg container mx-auto overflow-x-auto mb-">
+    <div className=" bg-orange-50 rounded-lg container mx-auto overflow-x-auto mb-4">
       <div className="flex flex-row max-width: 1000px; gap-4">
         <div>{children}</div>
         {products.map((product) => (
-          <div className="col" key={product.id}>
+          <div className="col" key={product.product_id}>
             <ProductCard
-              name={product.name}
-              image={product.image}
-              volume={product.volume}
-              abv={product.abv}
-              description={product.description}
-              price={product.price}
-              link={`product/${product.id}`}
+              name={product.product_name}
+              image={product.product_image}
+              volume={product.product_volume}
+              abv={product.product_abv}
+              description={product.product_description}
+              price={product.product_price}
+              link={`product/${product.product_id}`}
             />
           </div>
         ))}
