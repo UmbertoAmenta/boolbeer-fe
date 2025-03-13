@@ -3,7 +3,7 @@ import axios from "../api/axios";
 
 import ProductCard from "./ProductCard";
 
-export default function FilteredSection({ children, filterLogic, overflowX }) {
+export default function FilteredSection({ children, filterLogic }) {
   // new products
   const [products, setProducts] = useState([]);
 

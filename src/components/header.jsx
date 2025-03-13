@@ -3,7 +3,7 @@ import { Link } from "react-router";
 
 export default function Header() {
   return (
-    <header className="bg-orange-200  text-gray-800">
+    <header className="bg-orange-200  text-gray-800 shadow-xl sticky top-0 z-10">
       <div className="container mx-auto flex justify-between items-center py-4 px-6">
         <Link to={"/"}>
           <img className="w-20" src="./logo_boolshop.png" alt="logo" />
