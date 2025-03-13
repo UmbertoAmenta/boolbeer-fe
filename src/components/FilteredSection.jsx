@@ -17,7 +17,7 @@ export default function FilteredSection({ children, filterLogic }) {
   useEffect(fetchProducts, [filterLogic]);
 
   return (
-    <div>
+    <div className="p-4">
       <div>{children}</div>
       {products.map((product) => {
         return <ProductCard key={product.id} {...product} />;
