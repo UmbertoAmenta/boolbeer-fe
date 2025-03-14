@@ -22,13 +22,14 @@ export default function ProductPage() {
         <div className="flex justify-evenly">
           <div className="relative w-50 ">
             <img
-              src={`http://localhost:3000/imgs/${product.product_image}`}
-              alt={product.product_name}
-            />
-            <img
               src={`http://localhost:3000/imgs/loghi_brands/${product.brand_logo}`}
               alt="logo-brand"
-              className="absolute top-0 -right-5 w-10 h-10"
+              className="h-10 w-10 object-contain absolute top-0 left-0"
+            />
+            <img
+              src={`http://localhost:3000/imgs/${product.product_image}`}
+              alt={product.product_name}
+              className="h-120 object-contain"
             />
           </div>
           <div>
@@ -50,6 +51,7 @@ export default function ProductPage() {
                     href={`https://${product.brand_web_site}`}
                     target="_blank"
                     rel="noopener noreferrer"
+                    className="text-blue-700 underline hover:text-blue-900"
                   >
                     {product.brand_name}
                   </a>
@@ -93,8 +95,8 @@ export default function ProductPage() {
             <div
               className={
                 product.product_disponibility > 0
-                  ? "text-green-700"
-                  : "text-red-700"
+                  ? "text-green-700 font-bold"
+                  : "text-red-700 font-bold"
               }
             >
               {product.product_disponibility > 0
@@ -107,19 +109,20 @@ export default function ProductPage() {
                 placeholder={1}
                 min={1}
                 max={product.product_disponibility}
-                className="border p-2 mr-2 w-15"
+                className="border border-neutral-500 rounded-lg p-2 mr-2 w-15"
               />
+
               <button
                 type="button"
-                className="bg-orange-200 px-4 py-2 rounded hover:scale-105"
+                className="text-gray-600 transition duration-200 hover:text-gray-700 hover:scale-120"
               >
-                Aggiungi
+                <i className="fa-solid fa-cart-shopping bg-orange-200 p-3 rounded hover:bg-orange-300 transition duration-200 mr-2"></i>
               </button>
               <button
                 type="button"
-                className="ml-2 text-gray-600 hover:text-blue-700 hover:scale-120"
+                className="bg-orange-400 px-4 py-2 rounded hover:bg-orange-500 transition duration-200 hover:scale-105"
               >
-                <i className="fa-solid fa-cart-shopping"></i>
+                Vai al carrello
               </button>
             </div>
           </div>
