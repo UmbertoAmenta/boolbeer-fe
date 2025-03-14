@@ -8,27 +8,31 @@ export default function ProductCard({
   description,
   price,
   link,
+  product_disponibility,
 }) {
   return (
     <Link to={link} className="block">
-      <div className="flex flex-row gap-5 bg-white rounded-lg shadow-md  my-4 w-100 h-60 mx-auto border-gray-200 transform transition duration-300 hover:scale-105">
+      <div className="bg-white/30 rounded-lg shadow-md p-4 my-4 w-60 mx-auto border-gray-200 transform transition duration-300 hover:scale-105 hover:bg-white">
         <div className="">
           <img
             src={`http://localhost:3000/imgs/${image}`}
             alt={name}
-            className="w-30 h-60 rounded-lg object-contain p-3"
+            className="h-60 rounded-lg object-contain p-3 m-auto"
           />
+          <div className="truncate w-50 hover:whitespace-normal transition-all duration-300">
+            <h4 className="text-xl font-bold text-gray-800 mb-2 inline ">
+              {name}
+            </h4>
+          </div>
         </div>
-        <div>
-          <h4 className="text-xl font-bold text-gray-800 mb-2 inline">
-            {name}
-          </h4>
-          <ul className="text-gray-600">
-            <li>Volume alcolico: {abv}%</li>
-            <li>{description}</li>
-            <li>Prezzo: €{price}</li>
-            <li>Volume: {volume}ml</li>
-          </ul>
+        <span className="text-orange-700 font-bold">{price}€</span>
+
+        <div className="flex justify-between text-gray-600">
+          <span>ABV {abv}%</span>
+          <span>{volume}ml</span>
+        </div>
+        <div className="flex justify-between text-gray-600">
+          <span>Pz. disponibili: {product_disponibility}</span>
         </div>
       </div>
     </Link>

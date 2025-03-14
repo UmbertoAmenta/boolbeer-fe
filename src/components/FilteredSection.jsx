@@ -19,9 +19,8 @@ export default function FilteredSection({ children, filterLogic }) {
   useEffect(fetchProducts, [filterLogic]);
 
   return (
-    <div className=" bg-orange-50 rounded-lg container mx-auto overflow-x-auto mb-4">
-      <div className="flex flex-row max-width: 1000px; gap-4">
-        <div>{children}</div>
+    <div className="rounded-lg mx-auto">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         {products.map((product) => (
           <div className="col" key={product.product_id}>
             <ProductCard
@@ -32,6 +31,7 @@ export default function FilteredSection({ children, filterLogic }) {
               description={product.product_description}
               price={product.product_price}
               link={`product/${product.product_id}`}
+              product_disponibility={product.product_disponibility}
             />
           </div>
         ))}
