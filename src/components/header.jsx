@@ -18,8 +18,7 @@ export default function Header() {
             <li>
               <a
                 href="/products"
-                className="hover:text-gray-900 hover:font-bold"
-              >
+                className="hover:text-gray-900 hover:font-bold">
                 Prodotti
               </a>
             </li>
@@ -31,9 +30,13 @@ export default function Header() {
             <li>
               <a
                 href="/contact"
-                className="hover:text-gray-900 hover:font-bold"
-              >
+                className="hover:text-gray-900 hover:font-bold">
                 Contatti
+              </a>
+            </li>
+            <li>
+              <a href="/cart" className="hover:text-gray-900 hover:font-bold">
+                <i className="fa-solid fa-cart-shopping rounded transition duration-200 mr-2"></i>
               </a>
             </li>
           </ul>

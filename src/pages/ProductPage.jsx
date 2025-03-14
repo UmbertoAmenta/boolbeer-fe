@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import CartButton from "../components/CartButton";
 
 export default function ProductPage() {
   const { id } = useParams();
@@ -51,8 +52,7 @@ export default function ProductPage() {
                     href={`https://${product.brand_web_site}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-700 underline hover:text-blue-900"
-                  >
+                    className="text-blue-700 underline hover:text-blue-900">
                     {product.brand_name}
                   </a>
                 </span>
@@ -97,33 +97,13 @@ export default function ProductPage() {
                 product.product_disponibility > 0
                   ? "text-green-700 font-bold"
                   : "text-red-700 font-bold"
-              }
-            >
+              }>
               {product.product_disponibility > 0
                 ? "Disponibile"
                 : "Non disponibile"}
             </div>
             <div className="mt-4 flex items-center">
-              <input
-                type="number"
-                placeholder={1}
-                min={1}
-                max={product.product_disponibility}
-                className="border border-neutral-500 rounded-lg p-2 mr-2 w-15"
-              />
-
-              <button
-                type="button"
-                className="text-gray-600 transition duration-200 hover:text-gray-700 hover:scale-120"
-              >
-                <i className="fa-solid fa-cart-shopping bg-orange-200 p-3 rounded hover:bg-orange-300 transition duration-200 mr-2"></i>
-              </button>
-              <button
-                type="button"
-                className="bg-orange-400 px-4 py-2 rounded hover:bg-orange-500 transition duration-200 hover:scale-105"
-              >
-                Vai al carrello
-              </button>
+              <CartButton product={product} />
             </div>
           </div>
         </div>
