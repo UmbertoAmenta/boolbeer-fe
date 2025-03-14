@@ -28,7 +28,7 @@ export default function Hero() {
       <img
         src={images[currentImageId]}
         alt="404: Image not found"
-        className="w-full h-120 object-cover shadow-md"
+        className="w-full h-120 object-cover shadow-md mb-8"
       />
       <button
         className="absolute top-50 left-0 mx-2 p-2 hover:cursor-pointer bg-neutral-800 rounded-full text-white text-2xl"
