@@ -8,8 +8,8 @@ export default function ProductPage() {
   const [product, setProduct] = useState({});
 
   useEffect(() => {
-    axios.get(`http://localhost:3000/products/${id}`).then((res) => {
-      setProduct(res.data);
+    axios.get(`http://localhost:3000/product/${id}`).then((res) => {
+      setProduct(res.data.product);
     });
   }, [id]);
 
@@ -19,61 +19,106 @@ export default function ProductPage() {
         <Link to="/">
           <i className="fa-solid fa-arrow-left text-2xl mb-2"></i>
         </Link>
-        <div className="flex">
-          <div className="w-30 h-50">
-            <img src="#" alt="CH₃CH₂OH" />
-            <img src="#" alt="logo" />
+        <div className="flex justify-evenly">
+          <div className="relative w-50 ">
+            <img
+              src={`http://localhost:3000/imgs/${product.product_image}`}
+              alt={product.product_name}
+            />
+            <img
+              src={`http://localhost:3000/imgs/loghi_brands/${product.brand_logo}`}
+              alt="logo-brand"
+              className="absolute top-0 -right-5 w-10 h-10"
+            />
           </div>
           <div>
             <h3>
               <strong>
-                {product.name} - {product.volume}
+                {product.product_name} - {`${product.product_volume}ml`}
               </strong>
             </h3>
-            <h2>prezzo</h2>
-            <ul>
+            <h2 className="my-2 text-2xl text-green-700">
+              <em>€{product.product_price}</em>
+            </h2>
+            <ul className="my-4 flex flex-col gap-y-4">
               <li>
                 <span className="inline-block w-35">
                   <strong>Produttore:</strong>
                 </span>
-                <span>?</span>
+                <span>
+                  <a
+                    href={`https://${product.brand_web_site}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {product.brand_name}
+                  </a>
+                </span>
               </li>
               <li>
                 <span className="inline-block w-35">
                   <strong>Paese:</strong>
                 </span>
-                <span>?</span>
+                <span>{product.brand_place}</span>
               </li>
               <li>
                 <span className="inline-block w-35">
                   <strong>Stile:</strong>
                 </span>
-                <span>?</span>
+                <span>
+                  {(product.details && product.details[0]?.style) || "N/A"}
+                </span>
               </li>
               <li>
                 <span className="inline-block w-35">
                   <strong>% Alcol:</strong>
                 </span>
-                <span>?</span>
+                <span>{product.product_abv}%</span>
               </li>
               <li>
                 <span className="inline-block w-35">
                   <strong>Colore:</strong>
                 </span>
-                <span>?</span>
+                <span>
+                  {(product.details && product.details[0]?.color) || "N/A"}
+                </span>
               </li>
               <li>
                 <span className="inline-block w-35">
                   <strong>Descrizione:</strong>
                 </span>
-                <span>?</span>
+                <span>{product.product_description}</span>
               </li>
             </ul>
-            <div>Disponibile / Non disponibile</div>
-            <div>
-              <input type="number" max={99} />
-              <button type="button">Aggiungi</button>
-              <button type="button">
+            <div
+              className={
+                product.product_disponibility > 0
+                  ? "text-green-700"
+                  : "text-red-700"
+              }
+            >
+              {product.product_disponibility > 0
+                ? "Disponibile"
+                : "Non disponibile"}
+            </div>
+            <div className="mt-4 flex items-center">
+              <input
+                type="number"
+                placeholder={1}
+                min={1}
+                max={product.product_disponibility}
+                className="border p-2 mr-2 w-15"
+              />
+              <button
+                type="button"
+                className="bg-orange-200 px-4 py-2 rounded hover:scale-105"
+              >
+                Aggiungi
+              </button>
+              <button
+                type="button"
+                className="ml-2 text-gray-600 hover:text-blue-700 hover:scale-120"
+              >
                 <i className="fa-solid fa-cart-shopping"></i>
               </button>
             </div>
