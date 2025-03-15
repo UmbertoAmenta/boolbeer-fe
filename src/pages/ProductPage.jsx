@@ -63,7 +63,8 @@ export default function ProductPage() {
                     href={`https://${product.brand_web_site}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-700 underline hover:text-blue-900">
+                    className="text-blue-700 underline hover:text-blue-900"
+                  >
                     {product.brand_name}
                   </a>
                 </span>
@@ -108,7 +109,8 @@ export default function ProductPage() {
                 product.product_disponibility > 0
                   ? "text-green-700 font-bold"
                   : "text-red-700 font-bold"
-              }>
+              }
+            >
               {product.product_disponibility > 0
                 ? "Disponibile"
                 : "Non disponibile"}
