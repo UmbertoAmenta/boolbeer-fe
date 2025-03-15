@@ -17,10 +17,10 @@ export default function HomePage() {
       .slice(0, 10);
   };
 
-  useEffect(() => {
-    // Scrolla in cima alla pagina
-    window.scrollTo(0, 0);
-  });
+  // useEffect(() => {
+  //   // Scrolla in cima alla pagina
+  //   window.scrollTo(0, 0);
+  // });
 
   return (
     // container
