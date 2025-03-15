@@ -1,6 +1,3 @@
-import { useEffect } from "react";
-
-// src/pages/HomePage.jsx
 import React, { useState } from "react";
 import Hero from "../components/Hero";
 import FilteredSection from "../components/FilteredSection";
@@ -16,11 +13,6 @@ export default function HomePage() {
   const filterBestSellersProducts = (products) => {
     return products.sort((a, b) => b.total_quantity_sold - a.total_quantity_sold).slice(0, 10);
   };
-
-  // useEffect(() => {
-  //   // Scrolla in cima alla pagina
-  //   window.scrollTo(0, 0);
-  // });
 
   return (
     <div>
