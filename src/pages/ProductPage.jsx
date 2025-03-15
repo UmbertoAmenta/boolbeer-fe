@@ -9,6 +9,14 @@ export default function ProductPage() {
   const [product, setProduct] = useState({});
 
   useEffect(() => {
+    scroll;
+  });
+
+  useEffect(() => {
+    // Scrolla in cima alla pagina
+    window.scrollTo(0, 0);
+
+    // Effettua la richiesta per ottenere i dettagli del prodotto
     axios.get(`http://localhost:3000/product/${id}`).then((res) => {
       setProduct(res.data.product);
     });
@@ -20,20 +28,23 @@ export default function ProductPage() {
         <Link to="/">
           <i className="fa-solid fa-arrow-left text-2xl mb-2"></i>
         </Link>
-        <div className="flex justify-evenly">
-          <div className="relative w-50 ">
+
+        <div className="">
+          {/* Sezione immagine prodotto e logo brand */}
+          <div className="relative w-full md:w-70 inline-block lg:w-100">
             <img
               src={`http://localhost:3000/imgs/loghi_brands/${product.brand_logo}`}
               alt="logo-brand"
-              className="h-10 w-10 object-contain absolute top-0 left-0"
+              className="h-25 w-25 object-contain absolute top-0 left-0"
             />
             <img
               src={`http://localhost:3000/imgs/${product.product_image}`}
               alt={product.product_name}
-              className="h-120 object-contain"
+              className="h-120 object-contain m-auto"
             />
           </div>
-          <div>
+          {/* Sezione descrittiva del prodotto */}
+          <div className="inline-block">
             <h3>
               <strong>
                 {product.product_name} - {`${product.product_volume}ml`}
