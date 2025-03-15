@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router";
+import SearchBar from "./SearchBar";
 
 export default function Header() {
   return (
@@ -11,6 +12,9 @@ export default function Header() {
         <nav>
           <ul className="flex space-x-4">
             <li>
+              <SearchBar></SearchBar>
+            </li>
+            <li>
               <a href="/" className="hover:text-gray-900 hover:font-bold">
                 Home
               </a>
@@ -18,7 +22,8 @@ export default function Header() {
             <li>
               <a
                 href="/products"
-                className="hover:text-gray-900 hover:font-bold">
+                className="hover:text-gray-900 hover:font-bold"
+              >
                 Prodotti
               </a>
             </li>
@@ -30,7 +35,8 @@ export default function Header() {
             <li>
               <a
                 href="/contact"
-                className="hover:text-gray-900 hover:font-bold">
+                className="hover:text-gray-900 hover:font-bold"
+              >
                 Contatti
               </a>
             </li>
