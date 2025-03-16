@@ -19,29 +19,63 @@ export default function CheckoutPage() {
 
   const [discountCode, setDiscountCode] = useState("");
   const [discount, setDiscount] = useState(0);
+  const [isDiscountApplied, setIsDiscountApplied] = useState(false);
+  const [isDiscountValid, setIsDiscountValid] = useState(true);
+
+  const [isBillingSameAsShipping, setIsBillingSameAsShipping] = useState(false);
 
   const handlerInputChange = (e, setInfo) => {
     const { name, value } = e.target;
     setInfo((prevInfo) => ({ ...prevInfo, [name]: value }));
   };
 
+  // quando gli indirizzi sono uguali imposta i dati di fat. = a quelli di sped.
+  const handlerBillingCheckboxChange = (e) => {
+    setIsBillingSameAsShipping(e.target.checked);
+    if (e.target.checked) {
+      setBillingData(shippingData);
+    }
+  };
+
+  // quando gli indirizzi sono uguali, al modificare della sped. viene modificata anche la fat.
+  const handlerShippingDataChange = (e) => {
+    handlerInputChange(e, setShippingData);
+    if (isBillingSameAsShipping) {
+      setBillingData((prevBillingData) => ({
+        ...prevBillingData,
+        [e.target.name]: e.target.value,
+      }));
+    }
+  };
+
   const totalPrice = () => {
-    return cart.reduce(
+    const total = cart.reduce(
       (total, item) => total + item.product_price * item.quantity,
       0
     );
+    return total;
+  };
+
+  const discountedPrice = () => {
+    return totalPrice() - totalPrice() * discount;
   };
 
   const applyDiscount = () => {
     if (discountCode === "ALCOOL4EVER") {
       setDiscount(0.1);
+      setIsDiscountApplied(true);
+      setIsDiscountValid(true);
     } else {
       setDiscount(0);
+      setIsDiscountApplied(false);
+      setIsDiscountValid(false);
     }
   };
 
   const handlerDiscountCodeChange = (e) => {
     setDiscountCode(e.target.value.toUpperCase());
+    setIsDiscountApplied(false);
+    setIsDiscountValid(true);
   };
 
   const handlerSubmitForm = (e) => {
@@ -51,58 +85,71 @@ export default function CheckoutPage() {
 
   return (
     <div className="max-w-6xl mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">Checkout</h2>
+      <h2 className="text-2xl font-bold">Checkout</h2>
       <form onSubmit={handlerSubmitForm}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <h3 className="text-xl font-semibold mb-2">Dati di Spedizione</h3>
+        <div>
+          <div className="flex flex-col items-start mt-4">
+            <h3 className="text-xl font-semibold mb-2">
+              Indirizzo di Spedizione
+            </h3>
             <input
               type="text"
               name="name"
               placeholder="Nome"
               value={shippingData.name}
-              onChange={(e) => handlerInputChange(e, setShippingData)}
-              className="border p-2 rounded w-full mb-2"
-              //   required
+              onChange={handlerShippingDataChange}
+              className="border p-2 rounded mb-2"
+              required
             />
             <input
               type="text"
               name="country"
               placeholder="Nazione"
               value={shippingData.country}
-              onChange={(e) => handlerInputChange(e, setShippingData)}
-              className="border p-2 rounded w-full mb-2"
-              //   required
+              onChange={handlerShippingDataChange}
+              className="border p-2 rounded mb-2"
+              required
             />
             <input
               type="text"
               name="city"
               placeholder="Città"
               value={shippingData.city}
-              onChange={(e) => handlerInputChange(e, setShippingData)}
-              className="border p-2 rounded w-full mb-2"
-              //   required
+              onChange={handlerShippingDataChange}
+              className="border p-2 rounded mb-2"
+              required
             />
             <input
               type="text"
-              name="zipcode"
+              name="zipCode"
               placeholder="Codice postale"
               value={shippingData.zipCode}
-              onChange={(e) => handlerInputChange(e, setShippingData)}
-              className="border p-2 rounded w-full mb-2"
-              //   required
+              onChange={handlerShippingDataChange}
+              className="border p-2 rounded mb-2"
+              required
             />
           </div>
-          <div>
-            <h3 className="text-xl font-semibold mb-2">Dati di Fatturazione</h3>
+          <div className="flex flex-col items-start mt-4">
+            <h3 className="text-xl font-semibold mb-2">
+              Indirizzo di Fatturazione
+            </h3>
+            <div className="mb-2">
+              <input
+                type="checkbox"
+                checked={isBillingSameAsShipping}
+                onChange={handlerBillingCheckboxChange}
+                className="mb-2"
+              />{" "}
+              Uguale all'indirizzo di spedizione
+            </div>
             <input
               type="text"
               name="name"
               placeholder="Nome"
               value={billingData.name}
               onChange={(e) => handlerInputChange(e, setBillingData)}
-              className="border p-2 rounded w-full mb-2"
-              //   required
+              className="border p-2 rounded mb-2"
+              required
             />
             <input
               type="text"
@@ -110,8 +157,8 @@ export default function CheckoutPage() {
               placeholder="Nazione"
               value={billingData.country}
               onChange={(e) => handlerInputChange(e, setBillingData)}
-              className="border p-2 rounded w-full mb-2"
-              //   required
+              className="border p-2 rounded mb-2"
+              required
             />
             <input
               type="text"
@@ -119,17 +166,17 @@ export default function CheckoutPage() {
               placeholder="Città"
               value={billingData.city}
               onChange={(e) => handlerInputChange(e, setBillingData)}
-              className="border p-2 rounded w-full mb-2"
-              //   required
+              className="border p-2 rounded mb-2"
+              required
             />
             <input
               type="text"
-              name="zipcode"
+              name="zipCode"
               placeholder="Codice postale"
               value={billingData.zipCode}
               onChange={(e) => handlerInputChange(e, setBillingData)}
-              className="border p-2 rounded w-full mb-2"
-              //   required
+              className="border p-2 rounded mb-2"
+              required
             />
           </div>
         </div>
@@ -143,7 +190,16 @@ export default function CheckoutPage() {
           ))}
         </ul>
         <div className="text-xl font-semibold mt-4">
-          Totale Ordine: {totalPrice().toFixed(2)}€
+          Totale Ordine:{" "}
+          {isDiscountApplied ? (
+            <>
+              <span className="line-through">{totalPrice().toFixed(2)}€</span>{" "}
+              <span>{discountedPrice().toFixed(2)}€</span> ({discountCode}: -
+              {discount * 100}%)
+            </>
+          ) : (
+            <span>{totalPrice().toFixed(2)}€</span>
+          )}
         </div>
         <div className="mt-4">
           <input
@@ -156,10 +212,17 @@ export default function CheckoutPage() {
           <button
             type="button"
             onClick={applyDiscount}
-            className="px-4 py-2 cursor-pointer bg-blue-200 hover:bg-blue-300 hover:scale-110 transition duration-200 rounded"
+            className={`px-4 py-2 bg-blue-200 rounded ${
+              isDiscountApplied
+                ? "bg-green-200"
+                : "cursor-pointer hover:bg-blue-300 hover:scale-110 transition duration-200"
+            }`}
           >
-            Applica Codice Sconto
+            {isDiscountApplied ? "Codice Valido" : "Applica Codice Sconto"}
           </button>
+          {!isDiscountValid && (
+            <div className="text-red-500 mt-2">Codice sconto non valido</div>
+          )}
         </div>
         <button
           type="submit"
