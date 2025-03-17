@@ -37,7 +37,7 @@ export default function ProductPage() {
             <img
               src={`http://localhost:3000/imgs/loghi_brands/${product.brand_logo}`}
               alt="logo-brand"
-              className="h-10 w-10 object-contain absolute top-0 left-0"
+              className="h-20 w-20 object-contain absolute top-0 left-0"
               loading="lazy"
             />
             <img
