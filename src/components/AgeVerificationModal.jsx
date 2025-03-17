@@ -1,14 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "../api/axios";
 
-export default function AgeVerificationModal({ onClose }) {
-  const [step, setStep] = useState("ageCheck"); // "ageCheck", "emailInput", "resultMessage"
+export default function AgeVerificationModal({ onClose, onDeny }) {
+  const [step, setStep] = useState("ageCheck");
   const [email, setEmail] = useState("");
   const [result, setResult] = useState("");
+  const [denied, setDenied] = useState(false);
+
+  // Avvia il timer solo se NON è stato negato
+  useEffect(() => {
+    if (step === "resultMessage" && !denied) {
+      const timer = setTimeout(() => {
+        onClose();
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [step, denied, onClose]);
 
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
-    console.log("Email inviata:", email);
     if (!email.trim()) {
       setResult("Per favore, inserisci una email valida.");
       setStep("resultMessage");
@@ -32,16 +42,19 @@ export default function AgeVerificationModal({ onClose }) {
   };
 
   const handleAgeYes = () => {
+    // Passa allo step di inserimento email
     setStep("emailInput");
   };
 
   const handleAgeNo = () => {
-    setResult("Torna quando potrai bere");
+    setResult("Accesso negato. Torna quando sarai maggiorenne!");
     setStep("resultMessage");
+    setDenied(true); // Segnaliamo che l'utente ha negato
+    onDeny();
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/80 z-50 ">
+    <div className="fixed inset-0 flex items-center justify-center bg-black/80 z-50">
       <div className="bg-orange-100 p-8 rounded-xl shadow-lg max-w-md mx-auto text-center w-150">
         {step === "ageCheck" && (
           <>
@@ -49,13 +62,13 @@ export default function AgeVerificationModal({ onClose }) {
             <div className="flex justify-around">
               <button
                 onClick={handleAgeYes}
-                className="px-4 py-2 w-25 h-18 shadow-md bg-green-800 text-white rounded-xl transform transition duration-300 hover:scale-105 text-3xl font-bold cursor-pointer"
+                className="px-4 py-2 bg-green-800 text-white rounded-xl"
               >
                 SI
               </button>
               <button
                 onClick={handleAgeNo}
-                className="px-4 py-2 w-25 h-18 shadow-md bg-red-800 text-white rounded-xl transform transition duration-300 hover:scale-105 text-3xl font-bold cursor-pointer"
+                className="px-4 py-2 bg-red-800 text-white rounded-xl"
               >
                 NO
               </button>
@@ -87,14 +100,16 @@ export default function AgeVerificationModal({ onClose }) {
 
         {step === "resultMessage" && (
           <>
-            <div></div>
             <h2 className="text-xl font-bold mb-4">{result}</h2>
-            <button
-              onClick={onClose}
-              className="px-4 py-2 bg-gray-500 text-white rounded"
-            >
-              Chiudi
-            </button>
+            {/* Mostra il bottone "Chiudi" solo se non è stato negato */}
+            {!denied && (
+              <button
+                onClick={onClose}
+                className="px-4 py-2 bg-gray-500 text-white rounded"
+              >
+                Chiudi
+              </button>
+            )}
           </>
         )}
       </div>
