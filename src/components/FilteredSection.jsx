@@ -32,6 +32,7 @@ export default function FilteredSection({ children, filterLogic }) {
               price={product.product_price}
               link={`product/${product.product_id}`}
               product_disponibility={product.product_disponibility}
+              brand={product.brand_logo}
             />
           </div>
         ))}

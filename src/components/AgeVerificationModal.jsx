@@ -17,7 +17,9 @@ export default function AgeVerificationModal({ onClose }) {
     try {
       const response = await axios.post("/discount/verify-email", { email });
       if (response.data.discount) {
-        setResult(`${response.data.message} Codice sconto: ${response.data.discount}`);
+        setResult(
+          `${response.data.message} Codice sconto: ${response.data.discount}`
+        );
       } else {
         setResult(response.data.message);
       }
@@ -39,17 +41,23 @@ export default function AgeVerificationModal({ onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white p-8 rounded shadow-lg max-w-md mx-auto text-center">
+    <div className="fixed inset-0 flex items-center justify-center bg-black/80 z-50 ">
+      <div className="bg-orange-100 p-8 rounded-xl shadow-lg max-w-md mx-auto text-center w-150">
         {step === "ageCheck" && (
           <>
-            <h2 className="text-2xl font-bold mb-4">Sei maggiorenne?</h2>
+            <h2 className="text-4xl font-bold mb-6">Sei maggiorenne?</h2>
             <div className="flex justify-around">
-              <button onClick={handleAgeYes} className="px-4 py-2 bg-green-500 text-white rounded">
-                Sì
+              <button
+                onClick={handleAgeYes}
+                className="px-4 py-2 w-25 h-18 shadow-md bg-green-800 text-white rounded-xl transform transition duration-300 hover:scale-105 text-3xl font-bold cursor-pointer"
+              >
+                SI
               </button>
-              <button onClick={handleAgeNo} className="px-4 py-2 bg-red-500 text-white rounded">
-                No
+              <button
+                onClick={handleAgeNo}
+                className="px-4 py-2 w-25 h-18 shadow-md bg-red-800 text-white rounded-xl transform transition duration-300 hover:scale-105 text-3xl font-bold cursor-pointer"
+              >
+                NO
               </button>
             </div>
           </>
@@ -64,10 +72,13 @@ export default function AgeVerificationModal({ onClose }) {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Inserisci la tua email"
-                className="border p-2 rounded w-full mb-4"
+                className="bg-white p-2 rounded w-full mb-4"
                 required
               />
-              <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded">
+              <button
+                type="submit"
+                className="px-4 py-2 bg-blue-500 text-white rounded"
+              >
                 Invia
               </button>
             </form>
@@ -76,8 +87,12 @@ export default function AgeVerificationModal({ onClose }) {
 
         {step === "resultMessage" && (
           <>
+            <div></div>
             <h2 className="text-xl font-bold mb-4">{result}</h2>
-            <button onClick={onClose} className="px-4 py-2 bg-gray-500 text-white rounded">
+            <button
+              onClick={onClose}
+              className="px-4 py-2 bg-gray-500 text-white rounded"
+            >
               Chiudi
             </button>
           </>

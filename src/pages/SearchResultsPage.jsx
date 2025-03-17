@@ -6,7 +6,6 @@ export default function SearchResultsPage() {
 
   return (
     <div>
-      <h2>Risultati della ricerca</h2>
       {products.length > 0 ? ( // Se ci sono risultati, mostra la lista dei prodotti
         <div className="container xl:max-w-320 mx-auto px-4">
           <div className="rounded-lg mx-auto">
@@ -22,6 +21,7 @@ export default function SearchResultsPage() {
                     price={product.product_price}
                     link={`/product/${product.product_id}`}
                     product_disponibility={product.product_disponibility}
+                    brand={product.brand_logo}
                   />
                 </div>
               ))}
