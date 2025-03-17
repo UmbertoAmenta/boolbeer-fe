@@ -11,15 +11,11 @@ export default function SearchBar() {
     const query = event.target.value.toLowerCase(); // Converte il testo in minuscolo per ricerche case-insensitive
     setSearch(query);
 
-    if (query === "") {
-      setProducts(allProducts); // Se la barra di ricerca è vuota, mostra tutti i prodotti
-    } else {
-      // Filtra i prodotti in base al nome
-      const filteredProducts = allProducts.filter((product) =>
-        product.product_name.toLowerCase().includes(query)
-      );
-      setProducts(filteredProducts);
-    }
+    // Filtra i prodotti in base al nome
+    const filteredProducts = allProducts.filter((product) =>
+      product.product_name.toLowerCase().includes(query)
+    );
+    setProducts(filteredProducts);
   };
 
   // Funzione per gestire l'invio del form e navigare alla pagina di ricerca
@@ -32,7 +28,7 @@ export default function SearchBar() {
   return (
     <form onSubmit={handleSubmit}>
       <input
-        className="rounded-l-2xl p-2 bg-white/40 items-center"
+        className="rounded-l-2xl p-2 w-40 bg-white/40 items-center"
         name="search"
         type="search"
         placeholder="Cerca prodotti..."

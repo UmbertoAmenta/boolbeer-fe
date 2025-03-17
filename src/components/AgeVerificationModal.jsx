@@ -62,13 +62,13 @@ export default function AgeVerificationModal({ onClose, onDeny }) {
             <div className="flex justify-around">
               <button
                 onClick={handleAgeYes}
-                className="px-4 py-2 bg-green-800 text-white rounded-xl"
+                className="px-4 py-2 w-25 h-18 shadow-md bg-green-800 text-white rounded-xl transform transition duration-300 hover:scale-105 text-3xl font-bold cursor-pointer"
               >
                 SI
               </button>
               <button
                 onClick={handleAgeNo}
-                className="px-4 py-2 bg-red-800 text-white rounded-xl"
+                className="px-4 py-2 w-25 h-18 shadow-md bg-red-800 text-white rounded-xl transform transition duration-300 hover:scale-105 text-3xl font-bold cursor-pointer"
               >
                 NO
               </button>
