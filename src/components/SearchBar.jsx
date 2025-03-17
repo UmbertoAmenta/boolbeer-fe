@@ -25,20 +25,24 @@ export default function SearchBar() {
   // Funzione per gestire l'invio del form e navigare alla pagina di ricerca
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (!search.trim()) return;
     navigate("/search");
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <input
-        className="search-bar"
+        className="rounded-l-2xl p-2 bg-white/40 items-center"
         name="search"
         type="search"
         placeholder="Cerca prodotti..."
         value={search}
         onChange={handleSearch}
       />
-      <button className="search-bar-btn" type="submit">
+      <button
+        className="hover:cursor-pointer p-2 bg-orange-400 hover:bg-orange-500 transition duration-300 rounded-r-2xl"
+        type="submit"
+      >
         <i className="fa-solid fa-magnifying-glass"></i>
       </button>
     </form>

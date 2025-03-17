@@ -9,23 +9,20 @@ export default function Header() {
         <Link to={"/"}>
           <img className="w-20" src="./logo_boolshop.png" alt="logo" />
         </Link>
-        <nav>
-          <ul className="flex space-x-4">
-            <li>
-              <SearchBar></SearchBar>
-            </li>
+        <nav className="">
+          <ul className="flex space-x-4 items-center">
             <li>
               <a href="/" className="hover:text-gray-900 hover:font-bold">
                 Home
               </a>
             </li>
             <li>
-              <a
-                href="/products"
+              <Link
+                to={"/search"}
                 className="hover:text-gray-900 hover:font-bold"
               >
                 Prodotti
-              </a>
+              </Link>
             </li>
             <li>
               <a href="/about" className="hover:text-gray-900 hover:font-bold">
@@ -41,9 +38,12 @@ export default function Header() {
               </a>
             </li>
             <li>
-              <a href="/cart" className="hover:text-gray-900 hover:font-bold">
+              <SearchBar></SearchBar>
+            </li>
+            <li>
+              <Link to="/cart" className="hover:text-gray-900 hover:font-bold">
                 <i className="fa-solid fa-cart-shopping rounded transition duration-200 mr-2"></i>
-              </a>
+              </Link>
             </li>
           </ul>
         </nav>
