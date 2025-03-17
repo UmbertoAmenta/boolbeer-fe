@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Hero from "../components/Hero";
 import FilteredSection from "../components/FilteredSection";
-import AgeVerificationModal from "../components/AgeVerificationModal";
+
 
 export default function HomePage() {
   const [showModal, setShowModal] = useState(true);
@@ -16,7 +16,7 @@ export default function HomePage() {
 
   return (
     <div>
-      {showModal && <AgeVerificationModal onClose={() => setShowModal(false)} />}
+      
       <Hero />
       <div className="container xl:max-w-320 mx-auto px-4">
         <h2 className="text-2xl font-bold text-gray-800">Gli ultimi arrivi</h2>
