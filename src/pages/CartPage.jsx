@@ -17,7 +17,7 @@ export default function CartPage() {
 
   return (
     <div className="max-w-6xl mx-auto p-4">
-      <div className="bg-white/50 p-6 rounded-lg shadow-md mb-6">
+      <div className="bg-white/50 p-6 rounded-lg shadow-md">
         <h2 className="text-2xl mb-4 font-bold">Il tuo carrello:</h2>
         {cart.length === 0 ? (
           <div className="flex flex-col items-center justify-center">
@@ -86,9 +86,11 @@ export default function CartPage() {
         {/* Sezione totale e checkout */}
         {cart.length === 0 ? null : (
           <div className="flex items-start justify-between mt-6">
-            <div className="text-xl font-bold">Totale: {total}€</div>
+            <div className="text-xl font-semibold">
+              Totale: <span className="font-bold">{total}€</span>
+            </div>
             <Link to="/checkout">
-              <button className="font-medium text-gray-600 transition duration-200 hover:text-gray-700 hover:scale-105 cursor-pointer bg-orange-200 hover:bg-orange-400 p-2 rounded">
+              <button className="font-medium text-neutral-800 transition duration-200 hover:text-neutral-900 hover:scale-105 cursor-pointer bg-orange-200 hover:bg-orange-400 p-2 rounded">
                 Procedi al check-out
               </button>
             </Link>

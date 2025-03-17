@@ -24,6 +24,7 @@ export default function SearchResultsPage() {
         <select
           value={sortOption}
           onChange={(e) => setSortOption(e.target.value)}
+          className="ml-2 rounded font-light"
         >
           <option value="recent">Recenti</option>
           <option value="price">Prezzo</option>

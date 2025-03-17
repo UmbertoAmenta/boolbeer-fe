@@ -28,7 +28,7 @@ export default function SearchBar() {
   return (
     <form onSubmit={handleSubmit}>
       <input
-        className="rounded-l-2xl p-2 bg-white/40 items-center"
+        className="rounded-l-2xl p-2 w-40 bg-white/40 items-center"
         name="search"
         type="search"
         placeholder="Cerca prodotti..."
