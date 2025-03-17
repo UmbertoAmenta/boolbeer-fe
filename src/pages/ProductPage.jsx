@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -8,6 +7,7 @@ import CartButton from "../components/CartButton";
 export default function ProductPage() {
   const { id } = useParams();
   const [product, setProduct] = useState({});
+  // const [showPopup, setShowPopup] = useState(false);
 
   // Quando l'ID cambia, scrolla in cima e carica il prodotto
   useEffect(() => {
@@ -15,10 +15,15 @@ export default function ProductPage() {
     axios
       .get(`http://localhost:3000/product/${id}`)
       .then((res) => setProduct(res.data.product))
-      .catch((error) =>
-        console.error("Errore nel fetch del prodotto:", error)
-      );
+      .catch((error) => console.error("Errore nel fetch del prodotto:", error));
   }, [id]);
+
+  // function handleAddToCart() {
+  //   setShowPopup(true);
+  //   setTimeout(() => {
+  //     setShowPopup(false);
+  //   }, 2000); //pop-up temporizzato
+  // }
 
   return (
     <div className="max-w-6xl mx-auto p-4">
@@ -77,7 +82,9 @@ export default function ProductPage() {
                 </span>
               </li>
               <li>
-                <span className="inline-block w-35 font-semibold">% Alcol:</span>
+                <span className="inline-block w-35 font-semibold">
+                  % Alcol:
+                </span>
                 <span>{product.product_abv}%</span>
               </li>
               <li>

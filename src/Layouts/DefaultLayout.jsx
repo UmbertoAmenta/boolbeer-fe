@@ -8,7 +8,7 @@ export default function DefaultLayout() {
       <div className="relative">
         <Header />
         {/* <main className="d-flex bg-[url('https://img.freepik.com/free-vector/abstract-natural-botanical-sketch-seamless-pattern_1284-50319.jpg')]"> */}
-        <main className="d-flex bg-orange-100">
+        <main className="d-flex bg-orange-100 relative">
           <Outlet />
         </main>
         <Footer />
