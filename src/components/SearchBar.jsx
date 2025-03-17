@@ -11,15 +11,11 @@ export default function SearchBar() {
     const query = event.target.value.toLowerCase(); // Converte il testo in minuscolo per ricerche case-insensitive
     setSearch(query);
 
-    if (query === "") {
-      setProducts(allProducts); // Se la barra di ricerca è vuota, mostra tutti i prodotti
-    } else {
-      // Filtra i prodotti in base al nome
-      const filteredProducts = allProducts.filter((product) =>
-        product.product_name.toLowerCase().includes(query)
-      );
-      setProducts(filteredProducts);
-    }
+    // Filtra i prodotti in base al nome
+    const filteredProducts = allProducts.filter((product) =>
+      product.product_name.toLowerCase().includes(query)
+    );
+    setProducts(filteredProducts);
   };
 
   // Funzione per gestire l'invio del form e navigare alla pagina di ricerca

@@ -22,8 +22,9 @@ const CartButton = ({ product }) => {
       <button
         type="button"
         onClick={handleAddToCart}
-        className="text-gray-600 transition duration-200 hover:text-gray-700 hover:scale-120 cursor-pointer">
-        <i className="fa-solid fa-cart-shopping bg-orange-200 p-3 rounded hover:bg-orange-300 transition duration-200 mr-2"></i>
+        className="text-gray-600 transition duration-200 hover:text-gray-700 hover:scale-120 cursor-pointer"
+      >
+        <i className="fa-solid fa-cart-shopping bg-orange-200 p-3 rounded hover:bg-orange-400 transition duration-200 mr-2"></i>
       </button>
     </div>
   );
