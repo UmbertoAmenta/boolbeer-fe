@@ -19,13 +19,17 @@ export default function AgeVerificationModal({ onClose, onDeny }) {
 
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
+
     if (!email.trim()) {
-      setResult("Per favore, inserisci una email valida.");
+      // If the user doesn't provide an email, proceed without sending the request
+      setResult("Verifica completata senza email.");
       setStep("resultMessage");
       return;
     }
+
     try {
       const response = await axios.post("/discount/verify-email", { email });
+
       if (response.data.discount) {
         setResult(
           `${response.data.message} Codice sconto: ${response.data.discount}`
@@ -33,6 +37,7 @@ export default function AgeVerificationModal({ onClose, onDeny }) {
       } else {
         setResult(response.data.message);
       }
+
       setStep("resultMessage");
     } catch (err) {
       console.error("Errore nella verifica dell'email:", err);
@@ -78,26 +83,29 @@ export default function AgeVerificationModal({ onClose, onDeny }) {
 
         {step === "emailInput" && (
           <>
-            <h2 className="text-2xl font-bold mb-4">Inserisci la tua email</h2>
+            {" "}
+            <h2 className="text-2xl font-bold mb-4">
+              Inserisci la tua email (opzionale)
+            </h2>{" "}
             <form onSubmit={handleEmailSubmit}>
+              {" "}
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Inserisci la tua email"
+                placeholder="Inserisci la tua email (opzionale)"
                 className="bg-white p-2 rounded w-full mb-4"
-                required
-              />
+              />{" "}
               <button
                 type="submit"
                 className="px-4 py-2 bg-blue-500 text-white rounded"
               >
-                Invia
-              </button>
-            </form>
+                {" "}
+                Invia{" "}
+              </button>{" "}
+            </form>{" "}
           </>
         )}
-
         {step === "resultMessage" && (
           <>
             <h2 className="text-xl font-bold mb-4">{result}</h2>
