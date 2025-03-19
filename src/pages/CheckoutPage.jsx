@@ -115,13 +115,16 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-4 grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div className="max-w-5xl m-auto p-4 grid grid-cols-1 md:grid-cols-3 gap-4">
       {/* Sezione Checkout */}
-      <div className="md:col-span-2 bg-white/50 p-6 rounded-lg shadow-md">
+      <div className=" md:col-span-2 bg-white/50 p-6 rounded-lg shadow-md">
         <h2 className="text-2xl font-bold">Checkout</h2>
         <form onSubmit={handlerSubmitForm}>
           {/* Indirizzo di Spedizione */}
-          <div className="w-110">
+          <div className="my-3">
+            <h3 className="text-xl font-semibold mb-3">
+              Indirizzo di Spedizione
+            </h3>
             <div className="flex justify-between gap-2">
               <input
                 type="text"
@@ -202,7 +205,6 @@ export default function CheckoutPage() {
               />
             </div>
           </div>
-
           <input
             type="checkbox"
             checked={isBillingSameAsShipping}
@@ -211,14 +213,12 @@ export default function CheckoutPage() {
           <label> La fatturazione è uguale all'indirizzo di spedizione</label>
           {/* Indirizzo di Fatturazione */}
           {isBillingSameAsShipping && (
-            <div>
-              <div className="mt-4">
-                <h3 className="text-xl font-semibold mb-2">
+            <div className="my-3">
+              <div>
+                <h3 className="text-xl font-semibold mb-3">
                   Indirizzo di Fatturazione
                 </h3>
-                <br />
-
-                <div className="w-110">
+                <div className="">
                   <div className="flex justify-between gap-2">
                     <input
                       type="text"
@@ -321,18 +321,19 @@ export default function CheckoutPage() {
               </div>
             </div>
           )}
-
-          <button
-            type="submit"
-            className="mt-4 px-4 py-2 bg-orange-200 hover:bg-orange-400 transition rounded"
-          >
-            Procedi con il pagamento
-          </button>
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              className="px-4 py-2 mt-5 bg-orange-200 hover:bg-orange-400 transition rounded"
+            >
+              Procedi con il pagamento
+            </button>
+          </div>
         </form>
       </div>
       {/* Riepilogo Ordine */}
       <div className="bg-white/50 p-6 rounded-lg shadow-md">
-        <h3 className="text-xl font-semibold mb-2">Riepilogo Ordine</h3>
+        <h3 className="text-xl font-semibold mb-3">Riepilogo Ordine</h3>
         <ul>
           {cart.map((product) => (
             <li key={product.id} className="mb-2">
@@ -341,6 +342,31 @@ export default function CheckoutPage() {
             </li>
           ))}
         </ul>
+
+        {/* Codice sconto */}
+        <div className=" flex md:flex-wrap lg:flex-nowrap gap-2 my-3">
+          <input
+            type="text"
+            placeholder="Codice sconto"
+            value={discountCode}
+            onChange={handlerDiscountCodeChange}
+            className="border border-neutral-300 p-2 rounded bg-white/80 h-10.5 w-full"
+          />
+          <button
+            type="button"
+            onClick={applyDiscount}
+            className={`px-4 py-2 h-10.5 w-full bg-blue-200 rounded ${
+              isDiscountApplied
+                ? "bg-green-200"
+                : "cursor-pointer hover:bg-blue-300 hover:scale-105 transition duration-200"
+            }`}
+          >
+            {isDiscountApplied ? "Codice Valido" : "Applica"}
+          </button>
+          {!isDiscountValid && (
+            <div className="text-red-500 mt-2">Codice sconto non valido</div>
+          )}
+        </div>
         <div className="text-xl font-semibold mt-4">
           Totale:{" "}
           {isDiscountApplied ? (
@@ -350,29 +376,6 @@ export default function CheckoutPage() {
             </>
           ) : (
             <span>{totalPrice().toFixed(2)}€</span>
-          )}
-        </div>
-        <div className="mt-4">
-          <input
-            type="text"
-            placeholder="Codice sconto"
-            value={discountCode}
-            onChange={handlerDiscountCodeChange}
-            className="border p-2 rounded mb-2 mr-5"
-          />
-          <button
-            type="button"
-            onClick={applyDiscount}
-            className={`px-4 py-2 bg-blue-200 rounded ${
-              isDiscountApplied
-                ? "bg-green-200"
-                : "cursor-pointer hover:bg-blue-300 hover:scale-105 transition duration-200"
-            }`}
-          >
-            {isDiscountApplied ? "Codice Valido" : "Applica Codice Sconto"}
-          </button>
-          {!isDiscountValid && (
-            <div className="text-red-500 mt-2">Codice sconto non valido</div>
           )}
         </div>
       </div>
