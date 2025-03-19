@@ -7,12 +7,12 @@ export default function ProductCard({
   abv,
   description,
   price,
-  link,
   product_disponibility,
   brand,
+  slug,
 }) {
   return (
-    <Link to={link} className="block">
+    <Link to={`/product/${slug}`} className="block">
       <div className="bg-white/30 rounded-lg shadow-md p-4 my-4 w-60 mx-auto border-gray-200 transform transition duration-300 hover:scale-105 hover:bg-white">
         <div className="relative">
           <img

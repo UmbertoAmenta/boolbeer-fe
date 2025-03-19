@@ -5,18 +5,44 @@ import axios from "axios"; // Se hai configurato axios in api/axios.js, usa quel
 import CartButton from "../components/CartButton";
 
 export default function ProductPage() {
-  const { id } = useParams();
+  const { slug } = useParams();
   const [product, setProduct] = useState({});
+  const [error, setError] = useState(null);
+
   // const [showPopup, setShowPopup] = useState(false);
 
-  // Quando l'ID cambia, scrolla in cima e carica il prodotto
+  // Quando lo slug cambia, scrolla in cima e carica il prodotto
   useEffect(() => {
-    window.scrollTo(0, 0);
-    axios
-      .get(`http://localhost:3000/product/${id}`)
-      .then((res) => setProduct(res.data.product))
-      .catch((error) => console.error("Errore nel fetch del prodotto:", error));
-  }, [id]);
+    if (slug) {
+      window.scrollTo(0, 0);
+      axios
+        .get(`http://localhost:3000/product/${slug}`)
+        .then((res) => {
+          setProduct(res.data.product);
+          setError(null);
+        })
+        .catch((error) => {
+          console.error("Errore nel fetch del prodotto:", error);
+          setError("Prodotto non trovato");
+        });
+    } else {
+      setError("Prodotto non trovato");
+    }
+  }, [slug]);
+
+  // se presente, mostra l'errore per evitare che venga caricata la pagina senza i dati
+  if (error) {
+    return (
+      <div className="max-w-6xl mx-auto p-4">
+        <div className="bg-gray-100 p-6 rounded-lg shadow-md mb-6">
+          <Link to="/">
+            <i className="fa-solid fa-arrow-left text-2xl mb-2"></i>
+          </Link>
+          <h2 className="text-red-700">{error}</h2>
+        </div>
+      </div>
+    );
+  }
 
   // function handleAddToCart() {
   //   setShowPopup(true);
