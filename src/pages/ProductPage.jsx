@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios"; // Se hai configurato axios in api/axios.js, usa quello
 import CartButton from "../components/CartButton";
+import { generateSlug } from "../utils/slug";
 
 export default function ProductPage() {
   const { slug } = useParams();
