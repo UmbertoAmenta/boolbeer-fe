@@ -42,13 +42,35 @@ export default function CheckoutPage() {
 
   // Sincronizzazione indirizzo di fatturazione con quello di spedizione
   const handlerBillingCheckboxChange = (e) => {
-    setIsBillingSameAsShipping(e.target.checked);
-    if (e.target.checked) {
+    const checked = e.target.checked;
+    setIsBillingSameAsShipping(checked);
+
+    if (checked) {
+      // Se la checkbox è selezionata, copia i dati di spedizione nella fatturazione
       setBillingData(shippingData);
+    } else {
+      // Se la checkbox è deselezionata, resetta i dati di fatturazione
+      setBillingData({
+        name: "",
+        surname: "",
+        email: "",
+        address: "",
+        country: "",
+        city: "",
+        zipCode: "",
+        phone: "",
+        taxCode: "",
+        vatNumber: "",
+      });
     }
   };
 
   const handlerShippingDataChange = (e) => {
+    const { name, value } = e.target;
+    setShippingData((prev) => ({ ...prev, [name]: value }));
+    if (!isBillingSameAsShipping) {
+      setBillingData((prev) => ({ ...prev, [name]: value }));
+    }
     handlerInputChange(e, setShippingData);
     if (isBillingSameAsShipping) {
       setBillingData((prevBillingData) => ({
@@ -105,7 +127,7 @@ export default function CheckoutPage() {
                 type="text"
                 name="name"
                 placeholder="Nome"
-                value={billingData.name}
+                value={shippingData.name}
                 onChange={handlerShippingDataChange}
                 className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
                 required
@@ -114,7 +136,7 @@ export default function CheckoutPage() {
                 type="text"
                 name="surname"
                 placeholder="Cognome"
-                value={billingData.surname}
+                value={shippingData.surname}
                 onChange={handlerShippingDataChange}
                 className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
                 required
@@ -125,7 +147,7 @@ export default function CheckoutPage() {
                 type="email"
                 name="email"
                 placeholder="E-mail"
-                value={billingData.email}
+                value={shippingData.email}
                 onChange={handlerShippingDataChange}
                 className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
                 required
@@ -145,7 +167,7 @@ export default function CheckoutPage() {
               type="text"
               name="address"
               placeholder="Indirizzo"
-              value={billingData.address}
+              value={shippingData.address}
               onChange={handlerShippingDataChange}
               className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
               required
@@ -155,7 +177,7 @@ export default function CheckoutPage() {
                 type="text"
                 name="country"
                 placeholder="Nazione"
-                value={billingData.country}
+                value={shippingData.country}
                 onChange={handlerShippingDataChange}
                 className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
                 required
@@ -164,7 +186,7 @@ export default function CheckoutPage() {
                 type="text"
                 name="city"
                 placeholder="Città"
-                value={billingData.city}
+                value={shippingData.city}
                 onChange={handlerShippingDataChange}
                 className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
                 required
@@ -173,127 +195,132 @@ export default function CheckoutPage() {
                 type="text"
                 name="zipCode"
                 placeholder="Codice postale"
-                value={billingData.zipCode}
+                value={shippingData.zipCode}
                 onChange={handlerShippingDataChange}
                 className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
                 required
               />
             </div>
           </div>
+
+          <input
+            type="checkbox"
+            checked={isBillingSameAsShipping}
+            onChange={handlerBillingCheckboxChange}
+          />
+          <label> La fatturazione è uguale all'indirizzo di spedizione</label>
           {/* Indirizzo di Fatturazione */}
-          <div className="mt-4">
-            <h3 className="text-xl font-semibold mb-2">
-              Indirizzo di Fatturazione
-            </h3>
-            <input
-              type="checkbox"
-              checked={isBillingSameAsShipping}
-              onChange={handlerBillingCheckboxChange}
-              className="mb-2"
-            />{" "}
-            Uguale all'indirizzo di spedizione
-            <br />
-            <div className="w-110">
-              <div className="flex justify-between gap-2">
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Nome"
-                  value={billingData.name}
-                  onChange={(e) => handlerInputChange(e, setBillingData)}
-                  className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
-                  required
-                />
-                <input
-                  type="text"
-                  name="surname"
-                  placeholder="Cognome"
-                  value={billingData.surname}
-                  onChange={(e) => handlerInputChange(e, setBillingData)}
-                  className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
-                  required
-                />
-              </div>
-              <div className="flex justify-between gap-2">
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="E-mail"
-                  value={billingData.email}
-                  onChange={(e) => handlerInputChange(e, setBillingData)}
-                  className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
-                  required
-                />
-                <input
-                  type="number"
-                  name="phone"
-                  pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
-                  placeholder="Telefono"
-                  value={shippingData.phone}
-                  onChange={(e) => handlerInputChange(e, setBillingData)}
-                  className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
-                  required
-                />
-              </div>
-              <input
-                type="text"
-                name="address"
-                placeholder="Indirizzo"
-                value={billingData.address}
-                onChange={(e) => handlerInputChange(e, setBillingData)}
-                className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
-                required
-              />
-              <div className="flex justify-between gap-2">
-                <input
-                  type="text"
-                  name="country"
-                  placeholder="Nazione"
-                  value={billingData.country}
-                  onChange={(e) => handlerInputChange(e, setBillingData)}
-                  className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
-                  required
-                />
-                <input
-                  type="text"
-                  name="city"
-                  placeholder="Città"
-                  value={billingData.city}
-                  onChange={(e) => handlerInputChange(e, setBillingData)}
-                  className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
-                  required
-                />
-                <input
-                  type="text"
-                  name="zipCode"
-                  placeholder="Codice postale"
-                  value={billingData.zipCode}
-                  onChange={(e) => handlerInputChange(e, setBillingData)}
-                  className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
-                  required
-                />
-              </div>
-              <div className="flex justify-between gap-2">
-                <input
-                  type="text"
-                  name="taxCode"
-                  placeholder="Codice Fiscale"
-                  value={billingData.taxCode}
-                  onChange={(e) => handlerInputChange(e, setBillingData)}
-                  className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
-                  required
-                />
-                <input
-                  type="text"
-                  name="vatNumber"
-                  placeholder="Partita IVA"
-                  value={billingData.vatNumber}
-                  onChange={(e) => handlerInputChange(e, setBillingData)}
-                  className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
-                />
+          {isBillingSameAsShipping && (
+            <div>
+              <div className="mt-4">
+                <h3 className="text-xl font-semibold mb-2">
+                  Indirizzo di Fatturazione
+                </h3>
+                <br />
+
+                <div className="w-110">
+                  <div className="flex justify-between gap-2">
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder="Nome"
+                      value={billingData.name}
+                      onChange={(e) => handlerInputChange(e, setBillingData)}
+                      className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
+                      required
+                    />
+                    <input
+                      type="text"
+                      name="surname"
+                      placeholder="Cognome"
+                      value={billingData.surname}
+                      onChange={(e) => handlerInputChange(e, setBillingData)}
+                      className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
+                      required
+                    />
+                  </div>
+                  <div className="flex justify-between gap-2">
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder="E-mail"
+                      value={billingData.email}
+                      onChange={(e) => handlerInputChange(e, setBillingData)}
+                      className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
+                      required
+                    />
+                    <input
+                      type="number"
+                      name="phone"
+                      pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+                      placeholder="Telefono"
+                      value={billingData.phone}
+                      onChange={(e) => handlerInputChange(e, setBillingData)}
+                      className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
+                      required
+                    />
+                  </div>
+                  <input
+                    type="text"
+                    name="address"
+                    placeholder="Indirizzo"
+                    value={billingData.address}
+                    onChange={(e) => handlerInputChange(e, setBillingData)}
+                    className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
+                    required
+                  />
+                  <div className="flex justify-between gap-2">
+                    <input
+                      type="text"
+                      name="country"
+                      placeholder="Nazione"
+                      value={billingData.country}
+                      onChange={(e) => handlerInputChange(e, setBillingData)}
+                      className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
+                      required
+                    />
+                    <input
+                      type="text"
+                      name="city"
+                      placeholder="Città"
+                      value={billingData.city}
+                      onChange={(e) => handlerInputChange(e, setBillingData)}
+                      className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
+                      required
+                    />
+                    <input
+                      type="text"
+                      name="zipCode"
+                      placeholder="Codice postale"
+                      value={billingData.zipCode}
+                      onChange={(e) => handlerInputChange(e, setBillingData)}
+                      className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
+                      required
+                    />
+                  </div>
+                  <div className="flex justify-between gap-2">
+                    <input
+                      type="text"
+                      name="taxCode"
+                      placeholder="Codice Fiscale"
+                      value={billingData.taxCode}
+                      onChange={(e) => handlerInputChange(e, setBillingData)}
+                      className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
+                      required
+                    />
+                    <input
+                      type="text"
+                      name="vatNumber"
+                      placeholder="Partita IVA"
+                      value={billingData.vatNumber}
+                      onChange={(e) => handlerInputChange(e, setBillingData)}
+                      className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
           <button
             type="submit"
@@ -323,6 +350,29 @@ export default function CheckoutPage() {
             </>
           ) : (
             <span>{totalPrice().toFixed(2)}€</span>
+          )}
+        </div>
+        <div className="mt-4">
+          <input
+            type="text"
+            placeholder="Codice sconto"
+            value={discountCode}
+            onChange={handlerDiscountCodeChange}
+            className="border p-2 rounded mb-2 mr-5"
+          />
+          <button
+            type="button"
+            onClick={applyDiscount}
+            className={`px-4 py-2 bg-blue-200 rounded ${
+              isDiscountApplied
+                ? "bg-green-200"
+                : "cursor-pointer hover:bg-blue-300 hover:scale-105 transition duration-200"
+            }`}
+          >
+            {isDiscountApplied ? "Codice Valido" : "Applica Codice Sconto"}
+          </button>
+          {!isDiscountValid && (
+            <div className="text-red-500 mt-2">Codice sconto non valido</div>
           )}
         </div>
       </div>
