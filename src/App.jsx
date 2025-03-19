@@ -14,7 +14,6 @@ import AgeVerificationModal from "./components/AgeVerificationModal";
 import AccessDeniedPage from "./pages/AccessDeniedPage";
 
 export default function App() {
- 
   const [isVerified, setIsVerified] = useState(null);
 
   // Quando l'utente clicca "SI" (anche dopo l'inserimento dell'email)
@@ -56,7 +55,7 @@ export default function App() {
           <Routes>
             <Route element={<DefaultLayout />}>
               <Route index path="/" element={<HomePage />} />
-              <Route path="/product/:id" element={<ProductPage />} />
+              <Route path="/product/:slug" element={<ProductPage />} />
               <Route path="/cart" element={<CartPage />} />
               <Route path="/search" element={<SearchResultsPage />} />
               <Route path="/checkout" element={<CheckoutPage />} />

@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { generateSlug } from "../utils/slug";
 
 export default function ProductCard({
   image,
@@ -7,12 +8,14 @@ export default function ProductCard({
   abv,
   description,
   price,
-  link,
   product_disponibility,
   brand,
+  slug,
 }) {
+  const productSlug = generateSlug(name);
+
   return (
-    <Link to={link} className="block">
+    <Link to={`/product/${productSlug}`} className="block">
       <div className="bg-white/30 rounded-lg shadow-md p-4 my-4 w-60 mx-auto border-gray-200 transform transition duration-300 hover:scale-105 hover:bg-white">
         <div className="relative">
           <img
