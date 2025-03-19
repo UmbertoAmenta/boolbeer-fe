@@ -1,5 +1,11 @@
 import { useState } from "react";
 import { useCart } from "../components/CartContext";
+import { loadStripe } from "@stripe/stripe-js";
+
+// Inizializza Stripe con la tua chiave pubblica (sostituisci con quella reale)
+const stripePromise = loadStripe(
+  "pk_test_51R4ONsFLHpRiN26Tq0tEKZPostKWKCAc1Nv5r8gCy5nLBfFmEnYvLlBB72IcNdbzElUyLu6cUZX1H2Cr04Moqzem00WbCeqR7o"
+);
 
 export default function CheckoutPage() {
   const { cart } = useCart();
@@ -21,7 +27,6 @@ export default function CheckoutPage() {
   const [discount, setDiscount] = useState(0);
   const [isDiscountApplied, setIsDiscountApplied] = useState(false);
   const [isDiscountValid, setIsDiscountValid] = useState(true);
-
   const [isBillingSameAsShipping, setIsBillingSameAsShipping] = useState(false);
 
   const handlerInputChange = (e, setInfo) => {
@@ -29,7 +34,6 @@ export default function CheckoutPage() {
     setInfo((prevInfo) => ({ ...prevInfo, [name]: value }));
   };
 
-  // quando gli indirizzi sono uguali imposta i dati di fat. = a quelli di sped.
   const handlerBillingCheckboxChange = (e) => {
     setIsBillingSameAsShipping(e.target.checked);
     if (e.target.checked) {
@@ -37,7 +41,6 @@ export default function CheckoutPage() {
     }
   };
 
-  // quando gli indirizzi sono uguali, al modificare della sped. viene modificata anche la fat.
   const handlerShippingDataChange = (e) => {
     handlerInputChange(e, setShippingData);
     if (isBillingSameAsShipping) {
@@ -78,9 +81,42 @@ export default function CheckoutPage() {
     setIsDiscountValid(true);
   };
 
-  const handlerSubmitForm = (e) => {
+  const handlerSubmitForm = async (e) => {
     e.preventDefault();
-    // da collegare al sistema di pagamento
+
+    // Costruisci l'array degli articoli dal carrello per Stripe Checkout.
+    // Il backend convertirà il prezzo in centesimi.
+    const items = cart.map((item) => ({
+      name: item.product_name,
+      price: item.product_price,
+      quantity: item.quantity,
+    }));
+
+    try {
+      // Richiama l'endpoint del backend per creare la sessione di Checkout
+      const response = await fetch(
+        "http://localhost:3000/checkout/create-checkout-session",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ items }),
+        }
+      );
+      const session = await response.json();
+
+      const stripe = await stripePromise;
+      const { error } = await stripe.redirectToCheckout({
+        sessionId: session.id,
+      });
+      if (error) {
+        console.error("Errore nel redirect a Stripe Checkout:", error);
+      }
+    } catch (error) {
+      console.error(
+        "Errore nella creazione della sessione di Checkout:",
+        error
+      );
+    }
   };
 
   return (
