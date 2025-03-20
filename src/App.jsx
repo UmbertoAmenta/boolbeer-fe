@@ -2,8 +2,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
 import { CartProvider } from "./components/CartContext";
 import { SearchProvider } from "./context/SearchContext";
-import DefaultLayout from "./Layouts/DefaultLayout";
 import { WishlistProvider } from "./context/wishlistContext";
+import DefaultLayout from "./Layouts/DefaultLayout";
 
 // Pagine
 import HomePage from "./pages/HomePage";
@@ -39,7 +39,6 @@ export default function App() {
             <Routes>
               <Route element={<DefaultLayout />}>
                 <Route
-                  index
                   path="/"
                   element={
                     <HomePage
@@ -47,6 +46,7 @@ export default function App() {
                       setIsVerified={setIsVerified}
                     />
                   }
+                  index
                 />
                 <Route path="/product/:slug" element={<ProductPage />} />
                 <Route path="/cart" element={<CartPage />} />
@@ -56,8 +56,8 @@ export default function App() {
                 <Route path="/checkout" element={<CheckoutPage />} />
                 <Route path="/about" element={<AboutUs />} />
                 <Route path="/contact" element={<ContactUs />} />
-                <Route path="/*" element={<PageNotFound />} />
                 <Route path="/wishlist" element={<WishlistPage />} />
+                <Route path="/*" element={<PageNotFound />} />
               </Route>
             </Routes>
           </BrowserRouter>
