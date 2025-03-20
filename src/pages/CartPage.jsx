@@ -1,18 +1,13 @@
 // pages/CartPage.jsx
 import React, { useState, useEffect } from "react";
-
 import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "../api/axios";
-
-import { useCart } from "../components/CartContext";
-import { Link, useParams } from "react-router-dom";
-import axios from "axios";
 
 export default function CartPage() {
   const { cartId: paramCartId } = useParams();
   const navigate = useNavigate();
 
-  // Se il parametro URL non è presente, proveremo a leggere da localStorage
+  // Usa il parametro URL o, in assenza, quello salvato in localStorage
   const [cartId, setCartId] = useState(
     paramCartId || localStorage.getItem("cartId")
   );
@@ -38,18 +33,18 @@ export default function CartPage() {
 
   useEffect(() => {
     async function initCart() {
-      // Evita di eseguire questa logica più di una volta
+      // Esegui questa logica solo una volta
       if (initialized) return;
 
       if (!cartId) {
-        // Caso: nessun cartId, crea un nuovo carrello
+        // Caso: nessun cartId (né in URL né in localStorage) → crea un nuovo carrello
         try {
           setLoading(true);
           const res = await axios.post("/cart/create");
           const newCartId = res.data.cartId;
           setCartId(newCartId);
           localStorage.setItem("cartId", newCartId);
-          // Reindirizza l'utente all'URL con il cartId
+          // Reindirizza a /cart/{newCartId} per rendere condivisibile l'URL
           navigate(`/cart/${newCartId}`, { replace: true });
         } catch (err) {
           console.error("Errore nella creazione del carrello:", err);
@@ -59,9 +54,9 @@ export default function CartPage() {
           setInitialized(true);
         }
       } else {
-        // Caso: abbiamo già un cartId
+        // Caso: abbiamo già un cartId → carica il carrello
         await loadCart(cartId);
-        // Se l'URL non contiene il cartId corretto, reindirizza
+        // Se l'URL non mostra il cartId corretto, forzalo
         if (!paramCartId || paramCartId !== cartId) {
           navigate(`/cart/${cartId}`, { replace: true });
         }
@@ -106,17 +101,8 @@ export default function CartPage() {
     }
   };
 
-
-  // Calcolo totale
   const total = cartItems
     .reduce((acc, item) => acc + item.price * item.quantity, 0)
-
-  const { slug } = useParams();
-
-  // Calcolo totale carrello
-  const total = cart
-    .reduce((acc, item) => acc + item.product_price * item.quantity, 0)
-
     .toFixed(2);
 
   if (loading) return <p>Caricamento in corso...</p>;
@@ -146,7 +132,6 @@ export default function CartPage() {
             </p>
           </div>
         ) : (
-
           <>
             <ul>
               {cartItems.map((item) => (
@@ -154,16 +139,6 @@ export default function CartPage() {
                   key={item.product_id}
                   className="flex justify-between items-center bg-white my-2 px-4 rounded-lg shadow-md"
                 >
-
-          <ul>
-            {cart.map((item) => (
-              <li
-                key={item.id}
-                className="flex justify-between items-center bg-white my-2 px-4 rounded-lg shadow-md"
-              >
-                {/* Sezione immagine, nome, quantità e prezzo*/}
-                <Link to={`/product/${slug}`}>
-
                   <div className="flex items-center gap-4">
                     <img
                       src={`http://localhost:3000/imgs/${item.image}`}
