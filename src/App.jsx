@@ -3,6 +3,7 @@ import { useState } from "react";
 import { CartProvider } from "./components/CartContext";
 import { SearchProvider } from "./context/SearchContext";
 import DefaultLayout from "./Layouts/DefaultLayout";
+import { WishlistProvider } from "./context/wishlistContext";
 
 // Pagine
 import HomePage from "./pages/HomePage";
@@ -12,9 +13,9 @@ import SearchResultsPage from "./pages/SearchResultsPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import AgeVerificationModal from "./components/AgeVerificationModal";
 import AccessDeniedPage from "./pages/AccessDeniedPage";
+import WishlistPage from "./pages/WishlistPage";
 
 export default function App() {
- 
   const [isVerified, setIsVerified] = useState(null);
 
   // Quando l'utente clicca "SI" (anche dopo l'inserimento dell'email)
@@ -50,20 +51,23 @@ export default function App() {
 
   // Se l'utente è verificato, mostra il sito normalmente
   return (
-    <SearchProvider>
-      <CartProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route element={<DefaultLayout />}>
-              <Route index path="/" element={<HomePage />} />
-              <Route path="/product/:id" element={<ProductPage />} />
-              <Route path="/cart" element={<CartPage />} />
-              <Route path="/search" element={<SearchResultsPage />} />
-              <Route path="/checkout" element={<CheckoutPage />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      </CartProvider>
-    </SearchProvider>
+    <WishlistProvider>
+      <SearchProvider>
+        <CartProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route element={<DefaultLayout />}>
+                <Route index path="/" element={<HomePage />} />
+                <Route path="/product/:id" element={<ProductPage />} />
+                <Route path="/cart" element={<CartPage />} />
+                <Route path="/search" element={<SearchResultsPage />} />
+                <Route path="/checkout" element={<CheckoutPage />} />
+                <Route path="/wishlist" element={<WishlistPage />} />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </CartProvider>
+      </SearchProvider>
+    </WishlistProvider>
   );
 }

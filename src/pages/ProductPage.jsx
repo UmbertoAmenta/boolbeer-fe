@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import axios from "axios"; // Se hai configurato axios in api/axios.js, usa quello
+import axios from "axios";
 import CartButton from "../components/CartButton";
+import { useWishlist } from "../context/wishlistContext";
+import WishlistButton from "../components/WishlistButton";
 
 export default function ProductPage() {
   const { id } = useParams();
@@ -65,8 +67,7 @@ export default function ProductPage() {
                     href={`https://${product.brand_web_site}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-700 underline hover:text-blue-900"
-                  >
+                    className="text-blue-700 underline hover:text-blue-900">
                     {product.brand_name}
                   </a>
                 </span>
@@ -105,14 +106,16 @@ export default function ProductPage() {
                 product.product_disponibility > 0
                   ? "text-green-700 font-bold"
                   : "text-red-700 font-bold"
-              }
-            >
+              }>
               {product.product_disponibility > 0
                 ? "Disponibile"
                 : "Non disponibile"}
             </div>
             <div className="mt-4 flex items-center">
               <CartButton product={product} />
+
+              {/* Pulsante aggiungi alla wishlist */}
+              <WishlistButton product={product} />
             </div>
           </div>
         </div>
