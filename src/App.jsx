@@ -3,6 +3,7 @@ import { useState } from "react";
 import { CartProvider } from "./components/CartContext";
 import { SearchProvider } from "./context/SearchContext";
 import DefaultLayout from "./Layouts/DefaultLayout";
+import { WishlistProvider } from "./context/wishlistContext";
 
 // Pagine
 import HomePage from "./pages/HomePage";
@@ -11,9 +12,11 @@ import CartPage from "./pages/CartPage";
 import SearchResultsPage from "./pages/SearchResultsPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import AccessDeniedPage from "./pages/AccessDeniedPage";
+import WishlistPage from "./pages/WishlistPage";
 import AboutUs from "./pages/AboutUs";
 import ContactUs from "./pages/ContactUs";
 import PageNotFound from "./pages/PageNotFound";
+
 
 export default function App() {
   const [isVerified, setIsVerified] = useState(null);
@@ -30,6 +33,25 @@ export default function App() {
   }
 
   return (
+    <WishlistProvider>
+      <SearchProvider>
+        <CartProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route element={<DefaultLayout />}>
+                <Route index path="/" element={<HomePage />} />
+                <Route path="/product/:id" element={<ProductPage />} />
+                <Route path="/cart" element={<CartPage />} />
+                <Route path="/search" element={<SearchResultsPage />} />
+                <Route path="/checkout" element={<CheckoutPage />} />
+                <Route path="/wishlist" element={<WishlistPage />} />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </CartProvider>
+      </SearchProvider>
+    </WishlistProvider>
+
     <SearchProvider>
       <CartProvider>
         <BrowserRouter>
@@ -59,5 +81,6 @@ export default function App() {
         </BrowserRouter>
       </CartProvider>
     </SearchProvider>
+
   );
 }
