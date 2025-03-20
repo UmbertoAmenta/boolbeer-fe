@@ -1,21 +1,42 @@
+// components/CartButton.jsx
 import React, { useState } from "react";
-import { useCart } from "./CartContext";
+import axios from "../api/axios";
 
 const CartButton = ({ product }) => {
-  const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [showPopup, setShowPopup] = useState(false);
 
-  const handleAddToCart = () => {
-    addToCart(product, quantity);
-    setShowPopup(true);
-    setTimeout(() => {
-      setShowPopup(false);
-    }, 3000); //pop-up temporizzato
+  const handleAddToCart = async () => {
+    try {
+      // Recupera (o crea) il cartId
+      let cartId = localStorage.getItem("cartId");
+      if (!cartId) {
+        // Se non esiste, crea un nuovo carrello
+        const createRes = await axios.post("/cart/create");
+        cartId = createRes.data.cartId;
+        localStorage.setItem("cartId", cartId);
+      }
+
+      // Usa product.product_id se presente, altrimenti product.id
+      const productId = product.product_id || product.id;
+
+      // A questo punto abbiamo un cartId, possiamo aggiungere il prodotto
+      const addRes = await axios.post("/cart/add", {
+        cartId,
+        productId,
+        quantity,
+      });
+      console.log("Prodotto aggiunto al carrello:", addRes.data.items);
+
+      setShowPopup(true);
+      setTimeout(() => setShowPopup(false), 3000);
+    } catch (error) {
+      console.error("Errore durante l'aggiunta al carrello:", error);
+    }
   };
 
   return (
-    <div className="">
+    <div>
       <div className="mt-4 flex items-center">
         <input
           type="number"
@@ -33,7 +54,7 @@ const CartButton = ({ product }) => {
           <i className="fa-solid fa-cart-shopping bg-orange-200 p-3 rounded hover:bg-orange-400 transition duration-200 mr-2"></i>
         </button>
       </div>
-      {/* Pop-up di conferma */}
+
       {showPopup && (
         <div className="absolute top-0 right-0 bg-green-700 text-white p-3 rounded-lg shadow-lg m-3">
           Prodotto aggiunto al carrello!

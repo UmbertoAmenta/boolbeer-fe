@@ -6,7 +6,7 @@ export default function SearchResultsPage() {
   const { products } = useSearchContext(); // Ottiene i prodotti filtrati dal contesto di ricerca
   const [sortOption, setSortOption] = useState("recent"); // Variabile per la gestione dell'opzione di ordinamento
 
-  // Ordinamento dei prodotti (.localeCompare distribuisce più stringhe in ordine alfabetico  )
+  // Ordinamento dei prodotti (.localeCompare distribuisce più stringhe in ordine alfabetico)
   const sortedProducts = [...products].sort((a, b) => {
     if (sortOption === "price") {
       return a.product_price - b.product_price;
@@ -44,7 +44,7 @@ export default function SearchResultsPage() {
                     abv={product.product_abv}
                     description={product.product_description}
                     price={product.product_price}
-                    link={`/product/${product.product_id}`}
+                    slug={product.product_slug}
                     product_disponibility={product.product_disponibility}
                     brand={product.brand_logo}
                   />
