@@ -26,7 +26,7 @@ export default function SearchBar() {
       setProducts(filteredProducts);
     }
 
-    navigate("/search/");
+    navigate(`/search/${search}`);
   };
 
   return (
