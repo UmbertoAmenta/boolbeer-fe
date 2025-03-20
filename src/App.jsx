@@ -11,6 +11,9 @@ import CartPage from "./pages/CartPage";
 import SearchResultsPage from "./pages/SearchResultsPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import AccessDeniedPage from "./pages/AccessDeniedPage";
+import AboutUs from "./pages/AboutUs";
+import ContactUs from "./pages/ContactUs";
+import PageNotFound from "./pages/PageNotFound";
 
 export default function App() {
   const [isVerified, setIsVerified] = useState(null);
@@ -48,6 +51,9 @@ export default function App() {
               <Route path="/search" element={<SearchResultsPage />} />
               <Route path="/search/:search" element={<SearchResultsPage />} />
               <Route path="/checkout" element={<CheckoutPage />} />
+              <Route path="/about" element={<AboutUs />} />
+              <Route path="/contact" element={<ContactUs />} />
+              <Route path="/*" element={<PageNotFound />} />
             </Route>
           </Routes>
         </BrowserRouter>
