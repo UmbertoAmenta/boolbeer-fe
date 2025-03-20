@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useCart } from "../components/CartContext";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import axios from "axios";
 
 export default function CartPage() {
   const { cart, removeFromCart, incrementQuantity, decrementQuantity } =
@@ -9,6 +10,8 @@ export default function CartPage() {
   const handleRemoveFromCart = (productId, quantity) => {
     removeFromCart(productId, quantity);
   };
+
+  const { slug } = useParams();
 
   // Calcolo totale carrello
   const total = cart
@@ -41,7 +44,7 @@ export default function CartPage() {
                 className="flex justify-between items-center bg-white my-2 px-4 rounded-lg shadow-md"
               >
                 {/* Sezione immagine, nome, quantità e prezzo*/}
-                <Link to={`/product/${item.product_id}`}>
+                <Link to={`/product/${slug}`}>
                   <div className="flex items-center gap-4">
                     <div>
                       <img
