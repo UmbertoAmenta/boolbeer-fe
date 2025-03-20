@@ -10,18 +10,19 @@ export default function SearchBar() {
   const handleSearch = (event) => {
     const query = event.target.value.toLowerCase(); // Converte il testo in minuscolo per ricerche case-insensitive
     setSearch(query);
-
-    // Filtra i prodotti in base al nome
-    const filteredProducts = allProducts.filter((product) =>
-      product.product_name.toLowerCase().includes(query)
-    );
-    setProducts(filteredProducts);
   };
 
   // Funzione per gestire l'invio del form e navigare alla pagina di ricerca
   const handleSubmit = (event) => {
     event.preventDefault();
     if (!search.trim()) return;
+
+    // Filtra i prodotti in base al nome
+    const filteredProducts = allProducts.filter((product) =>
+      product.product_name.toLowerCase().includes(search)
+    );
+    setProducts(filteredProducts);
+
     navigate("/search");
   };
 
