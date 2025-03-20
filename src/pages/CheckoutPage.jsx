@@ -133,7 +133,7 @@ export default function CheckoutPage() {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ items }),
+          body: JSON.stringify({ items, discountCode }), // Invia il codice sconto
         }
       );
       const session = await response.json();
