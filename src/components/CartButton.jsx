@@ -1,10 +1,12 @@
 // components/CartButton.jsx
 import React, { useState } from "react";
 import axios from "../api/axios";
+import { useCart } from "./CartContext";
 
 const CartButton = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
   const [showPopup, setShowPopup] = useState(false);
+  const { addToCart } = useCart();
 
   const handleAddToCart = async () => {
     try {
@@ -27,6 +29,8 @@ const CartButton = ({ product }) => {
         quantity,
       });
       console.log("Prodotto aggiunto al carrello:", addRes.data.items);
+
+      addToCart(product, quantity);
 
       setShowPopup(true);
       setTimeout(() => setShowPopup(false), 3000);
