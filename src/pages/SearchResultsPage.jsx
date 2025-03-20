@@ -1,24 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSearchContext } from "../context/SearchContext";
-import axios from "../api/axios";
-
 import ProductCard from "../components/ProductCard";
 
 export default function SearchResultsPage() {
-  const { products, setProducts } = useSearchContext(); // Ottiene i prodotti filtrati dal contesto di ricerca
+  const { products } = useSearchContext(); // Ottiene i prodotti filtrati dal contesto di ricerca
   const [sortOption, setSortOption] = useState("recent"); // Variabile per la gestione dell'opzione di ordinamento
-
-  // Fetch products data when component mounts
-  useEffect(() => {
-    axios
-      .get("http://localhost:3000/alldata")
-      .then((res) => {
-        setProducts(res.data.products);
-      })
-      .catch((err) =>
-        console.error("Errore nel caricamento dei prodotti:", err)
-      );
-  }, [setProducts]);
 
   // Ordinamento dei prodotti (.localeCompare distribuisce più stringhe in ordine alfabetico)
   const sortedProducts = [...products].sort((a, b) => {
