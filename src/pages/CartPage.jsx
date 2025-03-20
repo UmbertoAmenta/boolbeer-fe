@@ -1,7 +1,12 @@
 // pages/CartPage.jsx
 import React, { useState, useEffect } from "react";
+
 import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "../api/axios";
+
+import { useCart } from "../components/CartContext";
+import { Link, useParams } from "react-router-dom";
+import axios from "axios";
 
 export default function CartPage() {
   const { cartId: paramCartId } = useParams();
@@ -101,9 +106,17 @@ export default function CartPage() {
     }
   };
 
+
   // Calcolo totale
   const total = cartItems
     .reduce((acc, item) => acc + item.price * item.quantity, 0)
+
+  const { slug } = useParams();
+
+  // Calcolo totale carrello
+  const total = cart
+    .reduce((acc, item) => acc + item.product_price * item.quantity, 0)
+
     .toFixed(2);
 
   if (loading) return <p>Caricamento in corso...</p>;
@@ -133,6 +146,7 @@ export default function CartPage() {
             </p>
           </div>
         ) : (
+
           <>
             <ul>
               {cartItems.map((item) => (
@@ -140,6 +154,16 @@ export default function CartPage() {
                   key={item.product_id}
                   className="flex justify-between items-center bg-white my-2 px-4 rounded-lg shadow-md"
                 >
+
+          <ul>
+            {cart.map((item) => (
+              <li
+                key={item.id}
+                className="flex justify-between items-center bg-white my-2 px-4 rounded-lg shadow-md"
+              >
+                {/* Sezione immagine, nome, quantità e prezzo*/}
+                <Link to={`/product/${slug}`}>
+
                   <div className="flex items-center gap-4">
                     <img
                       src={`http://localhost:3000/imgs/${item.image}`}
