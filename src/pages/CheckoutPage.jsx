@@ -83,16 +83,14 @@ export default function CheckoutPage() {
     if (isBillingSameAsShipping) {
       setBillingData((prevBillingData) => ({
         ...prevBillingData,
-        [e.target.name]: e.target.value,
+        [name]: value,
       }));
     }
   };
 
+  // Calcola il totale usando le proprietà "price" e "quantity"
   const totalPrice = () => {
-    return cart.reduce(
-      (total, item) => total + item.product_price * item.quantity,
-      0
-    );
+    return cart.reduce((total, item) => total + item.price * item.quantity, 0);
   };
 
   const discountedPrice = () => {
@@ -123,8 +121,8 @@ export default function CheckoutPage() {
     // Costruisci l'array degli articoli dal carrello per Stripe Checkout.
     // Il backend convertirà il prezzo in centesimi.
     const items = cart.map((item) => ({
-      name: item.product_name,
-      price: item.product_price,
+      name: item.name,
+      price: item.price,
       quantity: item.quantity,
     }));
 
@@ -158,7 +156,7 @@ export default function CheckoutPage() {
   return (
     <div className="max-w-5xl m-auto p-4 grid grid-cols-1 md:grid-cols-3 gap-4">
       {/* Sezione Checkout */}
-      <div className=" md:col-span-2 bg-white/50 p-6 rounded-lg shadow-md">
+      <div className="md:col-span-2 bg-white/50 p-6 rounded-lg shadow-md">
         <h2 className="text-2xl font-bold">Checkout</h2>
         <form onSubmit={handlerSubmitForm}>
           {/* Indirizzo di Spedizione */}
@@ -248,7 +246,7 @@ export default function CheckoutPage() {
           </div>
 
           {/* Scelta per la fatturazione */}
-          <label> La fatturazione è uguale all'indirizzo di spedizione:</label>
+          <label>La fatturazione è uguale all'indirizzo di spedizione:</label>
           <br />
           <input
             type="radio"
@@ -318,7 +316,7 @@ export default function CheckoutPage() {
             </div>
           )}
 
-          {/* Indirizzo di Fatturazione diversa*/}
+          {/* Indirizzo di Fatturazione diversa */}
           {isBillingDiffShipping && (
             <div className="my-3">
               <h3 className="text-xl font-semibold mb-3">
@@ -489,14 +487,13 @@ export default function CheckoutPage() {
         <ul>
           {cart.map((product) => (
             <li key={product.id} className="mb-2">
-              {product.product_name} - {product.quantity} x{" "}
-              {product.product_price}€
+              {product.name} - {product.quantity} x {product.price}€
             </li>
           ))}
         </ul>
 
         {/* Codice sconto */}
-        <div className=" flex md:flex-wrap lg:flex-nowrap gap-2 my-3">
+        <div className="flex md:flex-wrap lg:flex-nowrap gap-2 my-3">
           <input
             type="text"
             placeholder="Codice sconto"

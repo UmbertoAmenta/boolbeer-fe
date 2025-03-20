@@ -1,78 +1,110 @@
 import axios from "axios";
 import { createContext, useContext, useState, useEffect } from "react";
+import axios from "../api/axios";
 
-// Creazione del contesto per il carrello
 const CartContext = createContext();
 
-// Custom hook per utilizzare il contesto del carrello
-export const useCart = () => {
-  return useContext(CartContext);
-};
+export const useCart = () => useContext(CartContext);
 
-// Provider del carrello
-const CartProvider = ({ children }) => {
-  // Stato del carrello inizializzato con i dati salvati in localStorage
-  const [cart, setCart] = useState(() => {
-    const savedCart = localStorage.getItem("cart");
-    console.log("Carrello caricato da localStorage:", savedCart);
-    return savedCart ? JSON.parse(savedCart) : [];
-  });
+// Funzione helper per attendere un certo tempo (opzionale)
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-  // Effetto per aggiornare localStorage ogni volta che il carrello cambia
+export const CartProvider = ({ children }) => {
+  const [cart, setCart] = useState([]);
+  const [cartId, setCartId] = useState(() => localStorage.getItem("cartId"));
+
+  // Funzione per ricaricare il carrello dal backend
+  const refreshCart = async (id) => {
+    try {
+      const res = await axios.get(`/cart/${id}`);
+      console.log("Carrello aggiornato:", res.data.items);
+      setCart(res.data.items);
+    } catch (error) {
+      console.error("Errore nel refresh del carrello:", error);
+    }
+  };
+
+  // Inizializza il carrello
   useEffect(() => {
-    console.log("Carrello aggiornato:", cart);
-    localStorage.setItem("cart", JSON.stringify(cart));
-  }, [cart]);
-
-  // Funzione per aggiungere un prodotto al carrello
-  const addToCart = (product, quantity) => {
-    setCart((prevCart) => {
-      // Controlla se il prodotto è già presente nel carrello
-      const existingItem = prevCart.find((item) => item.id === product.id);
-
-      if (existingItem) {
-        // Se esiste, aggiorna solo la quantità
-        return prevCart.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
-        );
-      } else {
-        // Se non esiste, aggiunge il nuovo prodotto
-        return [...prevCart, { ...product, quantity }];
+    const initializeCart = async () => {
+      try {
+        let id = cartId;
+        if (!id) {
+          const response = await axios.post("/cart/create");
+          id = response.data.cartId;
+          setCartId(id);
+          localStorage.setItem("cartId", id);
+        }
+        await refreshCart(id);
+      } catch (error) {
+        console.error("Errore nell'inizializzazione del carrello:", error);
       }
-    });
+    };
+
+    initializeCart();
+  }, []);
+
+  // Funzione per aggiungere un prodotto
+  const addToCart = async (product, quantity) => {
+    try {
+      await axios.post("/cart/add", {
+        cartId,
+        productId: product.product_id || product.id,
+        quantity,
+      });
+      // Aspetta un attimo e ricarica il carrello
+      await delay(100);
+      await refreshCart(cartId);
+    } catch (error) {
+      console.error("Errore durante l'aggiunta al carrello:", error);
+    }
   };
 
-  // Incrementa la quantità di un prodotto nel carrello
-  const incrementQuantity = (productId) => {
-    setCart((prevCart) =>
-      prevCart.map((item) =>
-        item.id === productId ? { ...item, quantity: item.quantity + 1 } : item
-      )
-    );
+  // Incrementa la quantità
+  const incrementQuantity = async (productId) => {
+    try {
+      await axios.post("/cart/add", {
+        cartId,
+        productId,
+        quantity: 1,
+      });
+      await delay(100);
+      await refreshCart(cartId);
+    } catch (error) {
+      console.error("Errore nell'incremento della quantità:", error);
+    }
   };
 
-  // Decrementa la quantità di un prodotto nel carrello (rimuove se quantità = 1)
-  const decrementQuantity = (productId) => {
-    setCart(
-      (prevCart) =>
-        prevCart
-          .map((item) => {
-            if (item.id === productId) {
-              return item.quantity > 1
-                ? { ...item, quantity: item.quantity - 1 }
-                : null;
-            }
-            return item;
-          })
-          .filter((item) => item !== null) // Filtra gli elementi null (rimossi)
-    );
+  // Decrementa la quantità o rimuove il prodotto
+  const decrementQuantity = async (productId, currentQuantity) => {
+    try {
+      if (currentQuantity > 1) {
+        await axios.post("/cart/add", {
+          cartId,
+          productId,
+          quantity: -1,
+        });
+        await delay(100);
+        await refreshCart(cartId);
+      } else {
+        await removeFromCart(productId);
+      }
+    } catch (error) {
+      console.error("Errore nel decremento della quantità:", error);
+    }
   };
 
-  // Rimuove completamente un prodotto dal carrello
-  const removeFromCart = (productId) => {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== productId));
+  // Rimuove un prodotto dal carrello
+  const removeFromCart = async (productId) => {
+    try {
+      await axios.delete("/cart/remove", {
+        data: { cartId, productId },
+      });
+      await delay(100);
+      await refreshCart(cartId);
+    } catch (error) {
+      console.error("Errore nella rimozione dal carrello:", error);
+    }
   };
 
   return (
@@ -89,5 +121,3 @@ const CartProvider = ({ children }) => {
     </CartContext.Provider>
   );
 };
-
-export { CartContext, CartProvider };
