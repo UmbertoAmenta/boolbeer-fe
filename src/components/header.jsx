@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import { CartContext } from "./CartContext";
 
@@ -21,45 +21,44 @@ export default function Header() {
           <nav
             className={`transition-all duration-300 absolute md:relative top-25 md:top-auto w-full right-0 md:w-auto bg-orange-200 md:bg-transparent p-4 md:p-0 flex flex-col md:flex-row md:gap-6 items-cente ${
               menuOpen ? "block" : "hidden"
-            } md:flex`}
-          >
+            } md:flex`}>
             <ul className="flex flex-col md:flex-row space-y-2 md:space-y-0 items-center">
               <li>
-                <Link
+                <NavLink
                   to="/"
-                  className="hover:bg-white/40 hover:font-bold px-4 py-2 rounded-2xl transition duration-200"
-                >
+                  className="hover:bg-white/40 hover:font-bold px-4 py-2 rounded-2xl transition duration-200">
                   Home
-                </Link>
+                </NavLink>
               </li>
               <li>
-                <Link
+                <NavLink
                   to={"/search"}
-                  className="hover:bg-white/40 hover:font-bold p-2 rounded-2xl transition duration-200"
-                >
+                  className="hover:bg-white/40 hover:font-bold p-2 rounded-2xl transition duration-200">
                   Prodotti
-                </Link>
+                </NavLink>
               </li>
               <li>
-                <Link
+                <NavLink
                   to="/about"
-                  className="hover:bg-white/40 hover:font-bold p-2 rounded-2xl transition duration-200"
-                >
+                  className="hover:bg-white/40 hover:font-bold p-2 rounded-2xl transition duration-200">
                   Chi Siamo
-                </Link>
+                </NavLink>
               </li>
               <li>
-                <Link
+                <NavLink
                   to="/contact"
-                  className="hover:bg-white/40 hover:font-bold p-2 rounded-2xl transition duration-200"
-                >
+                  className="hover:bg-white/40 hover:font-bold p-2 rounded-2xl transition duration-200">
                   Contatti
-                </Link>
+                </NavLink>
               </li>
             </ul>
           </nav>
 
+
+          {/* Carrello , SearchBar e wishlist */}
+
           {/* SearchBar */}
+
           <SearchBar />
 
           {/* Icona del Carrello con Badge di Notifica */}
@@ -76,12 +75,14 @@ export default function Header() {
               </span>
             )}
           </Link>
+          <Link to="/wishlist" className="hover:text-gray-900 hover:font-bold">
+            <i className="fa-solid fa-heart hover:text-black transition duration-200 text-3xl mr-2"></i>
+          </Link>
 
           {/* Hamburger Button */}
           <button
             className="md:hidden text-2xl"
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
+            onClick={() => setMenuOpen(!menuOpen)}>
             <i className="fa-solid fa-bars hover:text-black transition duration-200 text-3xl cursor-pointer"></i>
           </button>
         </div>
