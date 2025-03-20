@@ -15,15 +15,18 @@ export default function SearchBar() {
   // Funzione per gestire l'invio del form e navigare alla pagina di ricerca
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (!search.trim()) return;
 
-    // Filtra i prodotti in base al nome
-    const filteredProducts = allProducts.filter((product) =>
-      product.product_name.toLowerCase().includes(search)
-    );
-    setProducts(filteredProducts);
+    if (!search.trim()) {
+      setProducts(allProducts);
+    } else {
+      // Filtra i prodotti in base al nome
+      const filteredProducts = allProducts.filter((product) =>
+        product.product_name.toLowerCase().includes(search)
+      );
+      setProducts(filteredProducts);
+    }
 
-    navigate("/search");
+    navigate("/search/");
   };
 
   return (
