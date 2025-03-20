@@ -21,7 +21,6 @@ export default function AgeVerificationModal({ onClose, onDeny }) {
     e.preventDefault();
 
     if (!email.trim()) {
-      // If the user doesn't provide an email, proceed without sending the request
       setResult("Verifica completata senza email.");
       setStep("resultMessage");
       return;
@@ -60,7 +59,16 @@ export default function AgeVerificationModal({ onClose, onDeny }) {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/80 z-50">
-      <div className="bg-orange-100 p-8 rounded-xl shadow-lg max-w-md mx-auto text-center w-150">
+      <div className="relative bg-orange-100 p-8 rounded-xl shadow-lg max-w-md mx-auto text-center w-150">
+        {/* Bottone "X" visibile solo nella schermata dell'email */}
+        {step === "emailInput" && (
+          <button
+            onClick={onClose}
+            className="cursor-pointer absolute top-1 right-3 text-gray-600 hover:text-gray-900 text-2xl"
+          >
+            <i className="fa-solid fa-xmark"></i>
+          </button>
+        )}
         {step === "ageCheck" && (
           <>
             <h2 className="text-4xl font-bold mb-6">Sei maggiorenne?</h2>
@@ -98,7 +106,7 @@ export default function AgeVerificationModal({ onClose, onDeny }) {
               />{" "}
               <button
                 type="submit"
-                className="px-4 py-2 bg-blue-500 text-white rounded"
+                className="px-4 py-2 bg-blue-500 text-white rounded cursor-pointer"
               >
                 {" "}
                 Invia{" "}

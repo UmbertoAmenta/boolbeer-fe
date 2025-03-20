@@ -476,7 +476,7 @@ export default function CheckoutPage() {
           <div className="flex justify-end">
             <button
               type="submit"
-              className="px-4 py-2 mt-5 bg-orange-200 hover:bg-orange-400 transition rounded"
+              className="px-4 py-2 mt-5 bg-orange-200 hover:bg-orange-400 transition rounded cursor-pointer"
             >
               Procedi con il pagamento
             </button>
@@ -510,7 +510,7 @@ export default function CheckoutPage() {
             className={`px-4 py-2 h-10.5 w-full bg-blue-200 rounded ${
               isDiscountApplied
                 ? "bg-green-200"
-                : "cursor-pointer hover:bg-blue-300 hover:scale-105 transition duration-200"
+                : "cursor-pointer hover:bg-blue-300 transition duration-200"
             }`}
           >
             {isDiscountApplied ? "Codice Valido" : "Applica"}
