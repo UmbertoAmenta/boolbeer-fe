@@ -1,25 +1,124 @@
+// pages/CartPage.jsx
 import React, { useState, useEffect } from "react";
-import { useCart } from "../components/CartContext";
-import { Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import axios from "../api/axios";
 
 export default function CartPage() {
-  const { cart, removeFromCart, incrementQuantity, decrementQuantity } =
-    useCart();
+  const { cartId: paramCartId } = useParams();
+  const navigate = useNavigate();
 
-  const handleRemoveFromCart = (productId, quantity) => {
-    removeFromCart(productId, quantity);
+  // Se il parametro URL non è presente, proveremo a leggere da localStorage
+  const [cartId, setCartId] = useState(
+    paramCartId || localStorage.getItem("cartId")
+  );
+  const [cartItems, setCartItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [initialized, setInitialized] = useState(false);
+
+  // Funzione per caricare il carrello dal backend
+  const loadCart = async (id) => {
+    try {
+      setLoading(true);
+      const res = await axios.get(`/cart/${id}`);
+      setCartItems(res.data.items);
+      setError(null);
+    } catch (err) {
+      console.error("Errore nel caricamento del carrello:", err);
+      setError("Carrello non trovato o errore nel recupero");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // Calcolo totale carrello
-  const total = cart
-    .reduce((acc, item) => acc + item.product_price * item.quantity, 0)
+  useEffect(() => {
+    async function initCart() {
+      // Evita di eseguire questa logica più di una volta
+      if (initialized) return;
+
+      if (!cartId) {
+        // Caso: nessun cartId, crea un nuovo carrello
+        try {
+          setLoading(true);
+          const res = await axios.post("/cart/create");
+          const newCartId = res.data.cartId;
+          setCartId(newCartId);
+          localStorage.setItem("cartId", newCartId);
+          // Reindirizza l'utente all'URL con il cartId
+          navigate(`/cart/${newCartId}`, { replace: true });
+        } catch (err) {
+          console.error("Errore nella creazione del carrello:", err);
+          setError("Impossibile creare il carrello");
+        } finally {
+          setLoading(false);
+          setInitialized(true);
+        }
+      } else {
+        // Caso: abbiamo già un cartId
+        await loadCart(cartId);
+        // Se l'URL non contiene il cartId corretto, reindirizza
+        if (!paramCartId || paramCartId !== cartId) {
+          navigate(`/cart/${cartId}`, { replace: true });
+        }
+        setInitialized(true);
+      }
+    }
+    initCart();
+  }, [cartId, paramCartId, navigate, initialized]);
+
+  // Funzione per incrementare la quantità di un prodotto
+  const incrementQuantity = async (productId) => {
+    try {
+      const res = await axios.post("/cart/add", {
+        cartId,
+        productId,
+        quantity: 1,
+      });
+      setCartItems(res.data.items);
+    } catch (err) {
+      console.error("Errore nell'incremento:", err);
+    }
+  };
+
+  // Funzione per decrementare la quantità di un prodotto
+  const decrementQuantity = async (productId, currentQuantity) => {
+    try {
+      if (currentQuantity > 1) {
+        const res = await axios.post("/cart/add", {
+          cartId,
+          productId,
+          quantity: -1,
+        });
+        setCartItems(res.data.items);
+      } else {
+        const res = await axios.delete("/cart/remove", {
+          data: { cartId, productId },
+        });
+        setCartItems(res.data.items);
+      }
+    } catch (err) {
+      console.error("Errore nel decremento:", err);
+    }
+  };
+
+  // Calcolo totale
+  const total = cartItems
+    .reduce((acc, item) => acc + item.price * item.quantity, 0)
     .toFixed(2);
+
+  if (loading) return <p>Caricamento in corso...</p>;
+  if (error) return <p className="text-red-700">{error}</p>;
 
   return (
     <div className="max-w-6xl mx-auto p-4">
       <div className="bg-white/50 p-6 rounded-lg shadow-md">
-        <h2 className="text-2xl mb-4 font-bold">Il tuo carrello:</h2>
-        {cart.length === 0 ? (
+        <h2 className="text-2xl mb-4 font-bold">Il tuo carrello</h2>
+        {cartId && (
+          <p className="text-gray-600 mb-4">
+            <strong>ID carrello:</strong> {cartId}
+          </p>
+        )}
+        {cartItems.length === 0 ? (
           <div className="flex flex-col items-center justify-center">
             <Link to="/search">
               <img
@@ -29,72 +128,61 @@ export default function CartPage() {
               />
             </Link>
             <p className="text-gray-500">
-              Il carrello è vuoto aggiungi almeno un articolo prima di procedere
-              per il check-out!
+              Il carrello è vuoto. Aggiungi almeno un articolo prima di
+              procedere al check-out!
             </p>
           </div>
         ) : (
-          <ul>
-            {cart.map((item) => (
-              <li
-                key={item.id}
-                className="flex justify-between items-center bg-white my-2 px-4 rounded-lg shadow-md"
-              >
-                {/* Sezione immagine, nome, quantità e prezzo*/}
-                <Link to={`/product/${item.product_id}`}>
+          <>
+            <ul>
+              {cartItems.map((item) => (
+                <li
+                  key={item.product_id}
+                  className="flex justify-between items-center bg-white my-2 px-4 rounded-lg shadow-md"
+                >
                   <div className="flex items-center gap-4">
+                    <img
+                      src={`http://localhost:3000/imgs/${item.image}`}
+                      alt={item.name}
+                      className="h-20 w-20 py-1 object-contain"
+                    />
                     <div>
-                      <img
-                        src={`http://localhost:3000/imgs/${item.product_image}`}
-                        alt={item.product_name}
-                        className="h-20 w-20 py-1 object-contain"
-                      />
-                    </div>
-                    <div>
-                      <h2 className="text-lg font-bold">{item.product_name}</h2>
+                      <h2 className="text-lg font-bold">{item.name}</h2>
                       <h3>
-                        {item.quantity} x {item.product_price}€
+                        {item.quantity} x {item.price}€
                       </h3>
                     </div>
                   </div>
-                </Link>
-                {/* Sezione per aggiungere, rimuovere prodotto */}
-                <div className="flex items-center space-x-4">
-                  <button
-                    onClick={() => incrementQuantity(item.id)}
-                    className="text-gray-800 hover:text-gray-600 cursor-pointer text-2xl mr-2"
-                  >
-                    <i className="fa-solid fa-plus"></i>
-                  </button>
-                  <button
-                    onClick={() => decrementQuantity(item.id)}
-                    className="text-gray-800 hover:text-gray-600 text-2xl cursor-pointer mr-2"
-                  >
-                    <i className="fa-solid fa-minus"></i>
-                  </button>
-                  <button
-                    onClick={() => handleRemoveFromCart(item.id, item.quantity)}
-                    className="text-red-600 hover:text-red-800 cursor-pointer font-semibold"
-                  >
-                    Rimuovi
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
-        {/* Sezione totale e checkout */}
-        {cart.length === 0 ? null : (
-          <div className="flex items-start justify-between mt-6">
-            <div className="text-xl font-semibold">
-              Totale: <span className="font-bold">{total}€</span>
+                  <div className="flex items-center space-x-4">
+                    <button
+                      onClick={() => incrementQuantity(item.product_id)}
+                      className="text-gray-800 hover:text-gray-600 cursor-pointer text-2xl"
+                    >
+                      <i className="fa-solid fa-plus"></i>
+                    </button>
+                    <button
+                      onClick={() =>
+                        decrementQuantity(item.product_id, item.quantity)
+                      }
+                      className="text-gray-800 hover:text-gray-600 cursor-pointer text-2xl"
+                    >
+                      <i className="fa-solid fa-minus"></i>
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+            <div className="flex items-start justify-between mt-6">
+              <div className="text-xl font-semibold">
+                Totale: <span className="font-bold">{total}€</span>
+              </div>
+              <Link to="/checkout">
+                <button className="font-medium text-neutral-800 transition duration-200 hover:text-neutral-900 hover:scale-105 cursor-pointer bg-orange-200 hover:bg-orange-400 p-2 rounded">
+                  Procedi al check-out
+                </button>
+              </Link>
             </div>
-            <Link to="/checkout">
-              <button className="font-medium text-neutral-800 transition duration-200 hover:text-neutral-900 hover:scale-105 cursor-pointer bg-orange-200 hover:bg-orange-400 p-2 rounded">
-                Procedi al check-out
-              </button>
-            </Link>
-          </div>
+          </>
         )}
       </div>
     </div>

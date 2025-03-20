@@ -70,7 +70,8 @@ export function CartProvider({ children }) {
         removeFromCart,
         incrementQuantity,
         decrementQuantity,
-      }}>
+      }}
+    >
       {children}
     </CartContext.Provider>
   );
