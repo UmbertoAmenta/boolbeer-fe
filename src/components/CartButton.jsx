@@ -1,14 +1,44 @@
 import React, { useState } from "react";
+
 import { useCart } from "../components/CartContext";
+
+import axios from "../api/axios";
+
 
 const CartButton = ({ product }) => {
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [showPopup, setShowPopup] = useState(false);
+  const { addToCart } = useCart();
 
   const handleAddToCart = async () => {
     try {
+
       await addToCart(product, quantity);
+
+      // Recupera (o crea) il cartId
+      let cartId = localStorage.getItem("cartId");
+      if (!cartId) {
+        // Se non esiste, crea un nuovo carrello
+        const createRes = await axios.post("/cart/create");
+        cartId = createRes.data.cartId;
+        localStorage.setItem("cartId", cartId);
+      }
+
+      // Usa product.product_id se presente, altrimenti product.id
+      const productId = product.product_id || product.id;
+
+      // A questo punto abbiamo un cartId, possiamo aggiungere il prodotto
+      const addRes = await axios.post("/cart/add", {
+        cartId,
+        productId,
+        quantity,
+      });
+      console.log("Prodotto aggiunto al carrello:", addRes.data.items);
+
+      
+
+
       setShowPopup(true);
       setTimeout(() => setShowPopup(false), 3000);
     } catch (error) {

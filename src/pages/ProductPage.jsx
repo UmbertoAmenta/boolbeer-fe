@@ -9,7 +9,6 @@ import WishlistButton from "../components/WishlistButton";
 
 import { generateSlug } from "../utils/slug";
 
-
 export default function ProductPage() {
   const { slug } = useParams();
   const [product, setProduct] = useState({});
@@ -85,7 +84,7 @@ export default function ProductPage() {
               {product.product_name} - {product.product_volume}ml
             </h3>
             <h2 className="my-2 text-2xl text-green-700">
-              <em>€{product.product_price}</em>
+              <em>{product.product_price}€</em>
             </h2>
             <ul className="my-4 flex flex-col gap-y-4">
               <li>
@@ -97,7 +96,8 @@ export default function ProductPage() {
                     href={`https://${product.brand_web_site}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-700 underline hover:text-blue-900">
+                    className="text-blue-700 underline hover:text-blue-900"
+                  >
                     {product.brand_name}
                   </a>
                 </span>
@@ -136,7 +136,8 @@ export default function ProductPage() {
                 product.product_disponibility > 0
                   ? "text-green-700 font-bold"
                   : "text-red-700 font-bold"
-              }>
+              }
+            >
               {product.product_disponibility > 0
                 ? "Disponibile"
                 : "Non disponibile"}

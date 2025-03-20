@@ -35,6 +35,8 @@ export default function Header() {
               <li>
                 <NavLink
                   to="/search"
+
+
                   className="hover:bg-white/40 hover:font-bold p-2 rounded-2xl transition duration-200"
                 >
                   Prodotti
@@ -74,7 +76,6 @@ export default function Header() {
             )}
           </Link>
 
-          {/* Icona Wishlist */}
           <Link to="/wishlist" className="hover:text-gray-900 hover:font-bold">
             <i className="fa-solid fa-heart hover:text-black transition duration-200 text-3xl mr-2"></i>
           </Link>
