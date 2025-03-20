@@ -57,11 +57,11 @@ export default function App() {
                 <Route path="/about" element={<AboutUs />} />
                 <Route path="/contact" element={<ContactUs />} />
                 <Route path="/wishlist" element={<WishlistPage />} />
-                <Route path="*" element={<PageNotFound />} />
-                <Route path="/product/*" element={<PageNotFound />} />
-                <Route path="/search/*" element={<PageNotFound />} />
-                <Route path="/cart/*" element={<PageNotFound />} />
               </Route>
+              <Route path="*" element={<PageNotFound />} />
+              <Route path="/product/*" element={<PageNotFound />} />
+              <Route path="/search/*" element={<PageNotFound />} />
+              <Route path="/cart/*" element={<PageNotFound />} />
             </Routes>
           </BrowserRouter>
         </CartProvider>
