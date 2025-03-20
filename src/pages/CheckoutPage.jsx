@@ -40,21 +40,24 @@ export default function CheckoutPage() {
   const [isDiscountApplied, setIsDiscountApplied] = useState(false);
   const [isDiscountValid, setIsDiscountValid] = useState(true);
   const [isBillingSameAsShipping, setIsBillingSameAsShipping] = useState(false);
+  const [isBillingDiffShipping, setIsBillingDiffShipping] = useState(false);
 
   const handlerInputChange = (e, setInfo) => {
     const { name, value } = e.target;
     setInfo((prevInfo) => ({ ...prevInfo, [name]: value }));
   };
 
-  const handlerBillingCheckboxChange = (e) => {
-    const checked = e.target.checked;
-    setIsBillingSameAsShipping(checked);
-
-    if (checked) {
-      // Se la checkbox è selezionata, copia i dati di spedizione nella fatturazione
-      setBillingData(shippingData);
+  const handleBillingOptionChange = (option) => {
+    if (option === "same") {
+      setIsBillingSameAsShipping(true);
+      setIsBillingDiffShipping(false);
+      setBillingData((prev) => ({
+        ...prev,
+        ...shippingData,
+      }));
     } else {
-      // Se la checkbox è deselezionata, resetta i dati di fatturazione
+      setIsBillingSameAsShipping(false);
+      setIsBillingDiffShipping(true);
       setBillingData({
         name: "",
         surname: "",
@@ -150,7 +153,6 @@ export default function CheckoutPage() {
         error
       );
     }
-
   };
 
   return (
@@ -244,119 +246,230 @@ export default function CheckoutPage() {
               />
             </div>
           </div>
+
+          {/* Scelta per la fatturazione */}
+          <label> La fatturazione è uguale all'indirizzo di spedizione:</label>
+          <br />
           <input
-            type="checkbox"
+            type="radio"
+            name="billingOption"
+            value="same"
             checked={isBillingSameAsShipping}
-            onChange={handlerBillingCheckboxChange}
+            onChange={() => handleBillingOptionChange("same")}
           />
-          <label> La fatturazione è uguale all'indirizzo di spedizione</label>
-          {/* Indirizzo di Fatturazione */}
+          <label> Si</label>
+          <br />
+          <input
+            type="radio"
+            name="billingOption"
+            value="different"
+            checked={isBillingDiffShipping}
+            onChange={() => handleBillingOptionChange("different")}
+          />
+          <label> No</label>
+
+          {/* Indirizzo di fatturazione uguale */}
           {isBillingSameAsShipping && (
+            <div>
+              <p>
+                <strong>Nome:</strong> {shippingData.name}{" "}
+                {shippingData.surname}
+              </p>
+              <p>
+                <strong>Email:</strong> {shippingData.email}
+              </p>
+              <p>
+                <strong>Telefono:</strong> {shippingData.phone}
+              </p>
+              <p>
+                <strong>Indirizzo:</strong> {shippingData.address},{" "}
+                {shippingData.city}, {shippingData.zipCode},{" "}
+                {shippingData.country}
+              </p>
+              <div className="flex justify-between gap-2 mt-2">
+                <input
+                  type="text"
+                  name="taxCode"
+                  placeholder="Codice Fiscale"
+                  value={billingData.taxCode}
+                  onChange={(e) =>
+                    setBillingData((prev) => ({
+                      ...prev,
+                      taxCode: e.target.value,
+                    }))
+                  }
+                  className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
+                  required
+                />
+                <input
+                  type="text"
+                  name="vatNumber"
+                  placeholder="Partita IVA"
+                  value={billingData.vatNumber}
+                  onChange={(e) =>
+                    setBillingData((prev) => ({
+                      ...prev,
+                      vatNumber: e.target.value,
+                    }))
+                  }
+                  className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Indirizzo di Fatturazione diversa*/}
+          {isBillingDiffShipping && (
             <div className="my-3">
-              <div>
-                <h3 className="text-xl font-semibold mb-3">
-                  Indirizzo di Fatturazione
-                </h3>
-                <div className="">
-                  <div className="flex justify-between gap-2">
-                    <input
-                      type="text"
-                      name="name"
-                      placeholder="Nome"
-                      value={billingData.name}
-                      onChange={(e) => handlerInputChange(e, setBillingData)}
-                      className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
-                      required
-                    />
-                    <input
-                      type="text"
-                      name="surname"
-                      placeholder="Cognome"
-                      value={billingData.surname}
-                      onChange={(e) => handlerInputChange(e, setBillingData)}
-                      className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
-                      required
-                    />
-                  </div>
-                  <div className="flex justify-between gap-2">
-                    <input
-                      type="email"
-                      name="email"
-                      placeholder="E-mail"
-                      value={billingData.email}
-                      onChange={(e) => handlerInputChange(e, setBillingData)}
-                      className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
-                      required
-                    />
-                    <input
-                      type="number"
-                      name="phone"
-                      pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
-                      placeholder="Telefono"
-                      value={billingData.phone}
-                      onChange={(e) => handlerInputChange(e, setBillingData)}
-                      className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
-                      required
-                    />
-                  </div>
-                  <input
-                    type="text"
-                    name="address"
-                    placeholder="Indirizzo"
-                    value={billingData.address}
-                    onChange={(e) => handlerInputChange(e, setBillingData)}
-                    className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
-                    required
-                  />
-                  <div className="flex justify-between gap-2">
-                    <input
-                      type="text"
-                      name="country"
-                      placeholder="Nazione"
-                      value={billingData.country}
-                      onChange={(e) => handlerInputChange(e, setBillingData)}
-                      className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
-                      required
-                    />
-                    <input
-                      type="text"
-                      name="city"
-                      placeholder="Città"
-                      value={billingData.city}
-                      onChange={(e) => handlerInputChange(e, setBillingData)}
-                      className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
-                      required
-                    />
-                    <input
-                      type="text"
-                      name="zipCode"
-                      placeholder="Codice postale"
-                      value={billingData.zipCode}
-                      onChange={(e) => handlerInputChange(e, setBillingData)}
-                      className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
-                      required
-                    />
-                  </div>
-                  <div className="flex justify-between gap-2">
-                    <input
-                      type="text"
-                      name="taxCode"
-                      placeholder="Codice Fiscale"
-                      value={billingData.taxCode}
-                      onChange={(e) => handlerInputChange(e, setBillingData)}
-                      className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
-                      required
-                    />
-                    <input
-                      type="text"
-                      name="vatNumber"
-                      placeholder="Partita IVA"
-                      value={billingData.vatNumber}
-                      onChange={(e) => handlerInputChange(e, setBillingData)}
-                      className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
-                    />
-                  </div>
-                </div>
+              <h3 className="text-xl font-semibold mb-3">
+                Indirizzo di Fatturazione
+              </h3>
+              <div className="flex justify-between gap-2">
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Nome"
+                  value={billingData.name}
+                  onChange={(e) =>
+                    setBillingData((prev) => ({
+                      ...prev,
+                      name: e.target.value,
+                    }))
+                  }
+                  className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
+                  required
+                />
+                <input
+                  type="text"
+                  name="surname"
+                  placeholder="Cognome"
+                  value={billingData.surname}
+                  onChange={(e) =>
+                    setBillingData((prev) => ({
+                      ...prev,
+                      surname: e.target.value,
+                    }))
+                  }
+                  className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
+                  required
+                />
+              </div>
+              <div className="flex justify-between gap-2">
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="E-mail"
+                  value={billingData.email}
+                  onChange={(e) =>
+                    setBillingData((prev) => ({
+                      ...prev,
+                      email: e.target.value,
+                    }))
+                  }
+                  className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
+                  required
+                />
+                <input
+                  type="number"
+                  name="phone"
+                  placeholder="Telefono"
+                  value={billingData.phone}
+                  onChange={(e) =>
+                    setBillingData((prev) => ({
+                      ...prev,
+                      phone: e.target.value,
+                    }))
+                  }
+                  className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
+                  required
+                />
+              </div>
+              <input
+                type="text"
+                name="address"
+                placeholder="Indirizzo"
+                value={billingData.address}
+                onChange={(e) =>
+                  setBillingData((prev) => ({
+                    ...prev,
+                    address: e.target.value,
+                  }))
+                }
+                className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
+                required
+              />
+              <div className="flex justify-between gap-2">
+                <input
+                  type="text"
+                  name="country"
+                  placeholder="Nazione"
+                  value={billingData.country}
+                  onChange={(e) =>
+                    setBillingData((prev) => ({
+                      ...prev,
+                      country: e.target.value,
+                    }))
+                  }
+                  className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
+                  required
+                />
+                <input
+                  type="text"
+                  name="city"
+                  placeholder="Città"
+                  value={billingData.city}
+                  onChange={(e) =>
+                    setBillingData((prev) => ({
+                      ...prev,
+                      city: e.target.value,
+                    }))
+                  }
+                  className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
+                  required
+                />
+                <input
+                  type="text"
+                  name="zipCode"
+                  placeholder="Codice postale"
+                  value={billingData.zipCode}
+                  onChange={(e) =>
+                    setBillingData((prev) => ({
+                      ...prev,
+                      zipCode: e.target.value,
+                    }))
+                  }
+                  className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
+                  required
+                />
+              </div>
+              <div className="flex justify-between gap-2">
+                <input
+                  type="text"
+                  name="taxCode"
+                  placeholder="Codice Fiscale"
+                  value={billingData.taxCode}
+                  onChange={(e) =>
+                    setBillingData((prev) => ({
+                      ...prev,
+                      taxCode: e.target.value,
+                    }))
+                  }
+                  className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
+                  required
+                />
+                <input
+                  type="text"
+                  name="vatNumber"
+                  placeholder="Partita IVA"
+                  value={billingData.vatNumber}
+                  onChange={(e) =>
+                    setBillingData((prev) => ({
+                      ...prev,
+                      vatNumber: e.target.value,
+                    }))
+                  }
+                  className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
+                />
               </div>
             </div>
           )}
