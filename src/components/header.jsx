@@ -77,6 +77,10 @@ export default function Header() {
             )}
           </Link>
 
+          <Link to="/wishlist" className="hover:text-gray-900 hover:font-bold">
+            <i className="fa-solid fa-heart hover:text-black transition duration-200 text-3xl mr-2"></i>
+          </Link>
+
           {/* Hamburger Button */}
           <button
             className="md:hidden text-2xl"
