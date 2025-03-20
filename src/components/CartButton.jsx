@@ -38,7 +38,7 @@ const CartButton = ({ product }) => {
         </button>
       </div>
       {showPopup && (
-        <div className="absolute top-0 right-0 bg-green-700 text-white p-3 rounded-lg shadow-lg m-3">
+        <div className="absolute top-2/3 right-0 bg-green-700 text-white p-3 rounded-lg shadow-lg m-3">
           Prodotto aggiunto al carrello!
         </div>
       )}
