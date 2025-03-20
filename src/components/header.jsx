@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import { CartContext } from "./CartContext";
 
@@ -25,36 +25,36 @@ export default function Header() {
           >
             <ul className="flex flex-col md:flex-row space-y-2 md:space-y-0 items-center">
               <li>
-                <Link
+                <NavLink
                   to="/"
                   className="hover:bg-white/40 hover:font-bold px-4 py-2 rounded-2xl transition duration-200"
                 >
                   Home
-                </Link>
+                </NavLink>
               </li>
               <li>
-                <Link
+                <NavLink
                   to={"/search"}
                   className="hover:bg-white/40 hover:font-bold p-2 rounded-2xl transition duration-200"
                 >
                   Prodotti
-                </Link>
+                </NavLink>
               </li>
               <li>
-                <Link
+                <NavLink
                   to="/about"
                   className="hover:bg-white/40 hover:font-bold p-2 rounded-2xl transition duration-200"
                 >
                   Chi Siamo
-                </Link>
+                </NavLink>
               </li>
               <li>
-                <Link
+                <NavLink
                   to="/contact"
                   className="hover:bg-white/40 hover:font-bold p-2 rounded-2xl transition duration-200"
                 >
                   Contatti
-                </Link>
+                </NavLink>
               </li>
             </ul>
           </nav>
