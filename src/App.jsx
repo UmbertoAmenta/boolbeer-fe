@@ -38,11 +38,25 @@ export default function App() {
           <BrowserRouter>
             <Routes>
               <Route element={<DefaultLayout />}>
-                <Route index path="/" element={<HomePage />} />
-                <Route path="/product/:id" element={<ProductPage />} />
+                <Route
+                  index
+                  path="/"
+                  element={
+                    <HomePage
+                      isVerified={isVerified}
+                      setIsVerified={setIsVerified}
+                    />
+                  }
+                />
+                <Route path="/product/:slug" element={<ProductPage />} />
                 <Route path="/cart" element={<CartPage />} />
+                <Route path="/cart/:cartId" element={<CartPage />} />
                 <Route path="/search" element={<SearchResultsPage />} />
+                <Route path="/search/:search" element={<SearchResultsPage />} />
                 <Route path="/checkout" element={<CheckoutPage />} />
+                <Route path="/about" element={<AboutUs />} />
+                <Route path="/contact" element={<ContactUs />} />
+                <Route path="/*" element={<PageNotFound />} />
                 <Route path="/wishlist" element={<WishlistPage />} />
               </Route>
             </Routes>
