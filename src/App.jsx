@@ -56,8 +56,11 @@ export default function App() {
                 <Route path="/checkout" element={<CheckoutPage />} />
                 <Route path="/about" element={<AboutUs />} />
                 <Route path="/contact" element={<ContactUs />} />
-                <Route path="/*" element={<PageNotFound />} />
                 <Route path="/wishlist" element={<WishlistPage />} />
+                <Route path="*" element={<PageNotFound />} />
+                <Route path="/product/*" element={<PageNotFound />} />
+                <Route path="/search/*" element={<PageNotFound />} />
+                <Route path="/cart/*" element={<PageNotFound />} />
               </Route>
             </Routes>
           </BrowserRouter>
