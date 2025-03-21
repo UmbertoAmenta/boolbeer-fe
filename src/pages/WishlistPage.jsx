@@ -1,6 +1,7 @@
 import React from "react";
 import { useWishlist } from "../context/wishlistContext";
 import { Link } from "react-router-dom";
+import { generateSlug } from "../utils/slug";
 
 const WishlistPage = () => {
   const { wishlist, removeFromWishlist } = useWishlist();
@@ -26,7 +27,7 @@ const WishlistPage = () => {
           <ul>
             {wishlist.map((item) => (
               <li key={item.id} className="flex justify-between mb-4">
-                <Link to={`/product/${item.product_id}`}>
+                <Link to={`/product/${generateSlug(item.product_name)}`}>
                   <div className="flex items-center gap-4">
                     <div>
                       <img
@@ -44,7 +45,7 @@ const WishlistPage = () => {
                   onClick={() => removeFromWishlist(item.id)}
                   className=" text-xl py-1 px-3 rounded-md hover:text-2xl cursor-pointer"
                 >
-                  <i class="fa-solid fa-trash"></i>
+                  <i className="fa-solid fa-trash"></i>
                 </button>
               </li>
             ))}
