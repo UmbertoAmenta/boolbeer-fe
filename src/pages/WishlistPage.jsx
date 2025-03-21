@@ -13,7 +13,7 @@ const WishlistPage = () => {
           <div className="flex flex-col items-center justify-center">
             <Link to="/search">
               <img
-                src="https://cdn-icons-png.flaticon.com/512/11329/11329060.png"
+                src="https://cdni.iconscout.com/illustration/premium/thumb/empty-wishlist-illustration-download-in-svg-png-gif-file-formats--online-shop-store-shopping-site-marketplace-states-pack-windows-interface-illustrations-9824480.png"
                 alt="wishlist vuota"
                 className="w-100 animate-pulse"
               />
@@ -42,7 +42,8 @@ const WishlistPage = () => {
                 </Link>
                 <button
                   onClick={() => removeFromWishlist(item.id)}
-                  className=" text-xl py-1 px-3 rounded-md hover:text-2xl cursor-pointer">
+                  className=" text-xl py-1 px-3 rounded-md hover:text-2xl cursor-pointer"
+                >
                   <i class="fa-solid fa-trash"></i>
                 </button>
               </li>

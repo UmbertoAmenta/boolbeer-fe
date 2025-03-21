@@ -12,7 +12,7 @@ export default function CartPage() {
 
   if (cart.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center">
+      <div className="mt-10 flex flex-col items-center">
         <Link to="/search">
           <img
             src="https://cdn-icons-png.flaticon.com/512/11329/11329060.png"
