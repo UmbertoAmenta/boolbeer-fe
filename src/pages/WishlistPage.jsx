@@ -33,7 +33,7 @@ const WishlistPage = () => {
                 key={item.product_id}
                 className="flex justify-between items-center bg-white my-2 px-4 rounded-lg shadow-md"
               >
-                <Link to={`/product/${item.product_id}`}>
+                <Link to={`/product/${generateSlug(item.product_name)}`}>
                   <div className="flex items-center gap-4">
                     <div>
                       <img
