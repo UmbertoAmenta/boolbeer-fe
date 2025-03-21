@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "../components/CartContext";
-
+import { generateSlug } from "../utils/slug";
 export default function CartPage() {
   const { cart, incrementQuantity, decrementQuantity } = useCart();
 
@@ -12,7 +12,7 @@ export default function CartPage() {
 
   if (cart.length === 0) {
     return (
-      <div className="mt-10 flex flex-col items-center">
+      <div className="mt-12 flex flex-col items-center">
         <Link to="/search">
           <img
             src="https://cdn-icons-png.flaticon.com/512/11329/11329060.png"
@@ -38,26 +38,22 @@ export default function CartPage() {
               key={item.product_id}
               className="flex justify-between items-center bg-white my-2 px-4 rounded-lg shadow-md"
             >
-              <div className="flex items-center gap-4">
-                <img
-                  src={`http://localhost:3000/imgs/${item.image}`}
-                  alt={item.name}
-                  className="h-20 w-20 py-1 object-contain"
-                />
-                <div>
-                  <h2 className="text-lg font-bold">{item.name}</h2>
-                  <h3>
-                    {item.quantity} x {item.price}€
-                  </h3>
+              <Link to={`/product/${generateSlug(item.name)}`}>
+                <div className="flex items-center gap-4">
+                  <img
+                    src={`http://localhost:3000/imgs/${item.image}`}
+                    alt={item.name}
+                    className="h-20 w-20 py-1 object-contain"
+                  />
+                  <div>
+                    <h2 className="text-lg font-bold">{item.name}</h2>
+                    <h3>
+                      {item.quantity} x {item.price}€
+                    </h3>
+                  </div>
                 </div>
-              </div>
+              </Link>
               <div className="flex items-center space-x-4">
-                <button
-                  onClick={() => incrementQuantity(item.product_id)}
-                  className="text-gray-800 hover:text-gray-600 cursor-pointer text-2xl"
-                >
-                  <i className="fa-solid fa-plus"></i>
-                </button>
                 <button
                   onClick={() =>
                     decrementQuantity(item.product_id, item.quantity)
@@ -65,6 +61,12 @@ export default function CartPage() {
                   className="text-gray-800 hover:text-gray-600 cursor-pointer text-2xl"
                 >
                   <i className="fa-solid fa-minus"></i>
+                </button>
+                <button
+                  onClick={() => incrementQuantity(item.product_id)}
+                  className="text-gray-800 hover:text-gray-600 cursor-pointer text-2xl"
+                >
+                  <i className="fa-solid fa-plus"></i>
                 </button>
               </div>
             </li>

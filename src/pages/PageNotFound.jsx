@@ -1,23 +1,24 @@
 export default function PageNotFound() {
   return (
-    <div className="flex items-center justify-center gap-x-6 h-screen bg-gray-100 text-gray-800">
+    <div className="flex flex-col items-center justify-center py-6 text-gray-800">
       <img
         src="https://media1.tenor.com/m/ZMPSEuvSoXMAAAAd/sunakook-cat.gif"
         alt="Gattino ubriaco"
-        className="notfound-gif"
+        className="h-100 shadow-md rounded-2xl"
       />
-      <div className="text-center">
+      <div className="text-center space-y-2">
         <h1 className="text-6xl font-bold text-orange-500 animate-fadeIn">
           404
         </h1>
-        <p className="text-xl mt-4 text-gray-600">
+        <p className="text-xl text-gray-600">
           Oops! La pagina che stai cercando non esiste.
         </p>
-        <a
+        <button
           href="/"
-          className="mt-8 inline-block px-6 py-3 bg-orange-500 text-white text-lg font-semibold rounded-lg hover:bg-orange-400 transition duration-300">
+          className="px-6 py-3 bg-orange-500 text-white text-lg font-semibold rounded-lg hover:bg-orange-400 transition duration-300 cursor-pointer"
+        >
           Torna alla Home
-        </a>
+        </button>
       </div>
     </div>
   );
