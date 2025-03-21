@@ -30,11 +30,9 @@ const WishlistPage = () => {
             <h2 className="text-2xl mb-4 font-bold">La tua wishlist</h2>
 
             {wishlist.map((item) => (
-              <li
-                key={item.id}
-                className="flex justify-between items-center bg-white my-2 px-4 rounded-lg shadow-md"
-              >
-                <Link to={`/product/${generateSlug(item.product_name)}`}>
+
+              <li key={item.product_id} className="flex justify-between mb-4">
+                <Link to={`/product/${item.product_id}`}>
                   <div className="flex items-center gap-4">
                     <div>
                       <img
@@ -49,9 +47,12 @@ const WishlistPage = () => {
                   </div>
                 </Link>
                 <button
-                  onClick={() => removeFromWishlist(item.id)}
-                  className=" text-xl py-1 px-3 rounded-md hover:scale-105 cursor-pointer transition duration-200"
-                >
+
+                  onClick={() => removeFromWishlist(item.product_id)}
+                  className=" text-xl py-1 px-3 rounded-md hover:text-2xl cursor-pointer">
+
+       
+
                   <i className="fa-solid fa-trash"></i>
                 </button>
               </li>

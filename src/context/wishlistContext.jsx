@@ -6,12 +6,14 @@ export const WishlistProvider = ({ children }) => {
   const [wishlist, setWishlist] = useState([]);
 
   const addToWishlist = (product) => {
+    console.log("Aggiungendo prodotto", product);
     setWishlist((prevWishlist) => [...prevWishlist, product]);
   };
 
   const removeFromWishlist = (productId) => {
+    console.log("Rimuovendo prodotto con id", productId);
     setWishlist((prevWishlist) =>
-      prevWishlist.filter((item) => item.id !== productId)
+      prevWishlist.filter((item) => item.product_id !== productId)
     );
   };
 
