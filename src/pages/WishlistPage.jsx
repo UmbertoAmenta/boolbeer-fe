@@ -26,7 +26,9 @@ const WishlistPage = () => {
             </p>
           </div>
         ) : (
-          <ul>
+          <ul className="bg-white/50 p-6 rounded-lg shadow-md">
+            <h2 className="text-2xl mb-4 font-bold">La tua wishlist</h2>
+
             {wishlist.map((item) => (
               <li
                 key={item.id}
@@ -48,7 +50,7 @@ const WishlistPage = () => {
                 </Link>
                 <button
                   onClick={() => removeFromWishlist(item.id)}
-                  className=" text-xl py-1 px-3 rounded-md hover:text-2xl cursor-pointer"
+                  className=" text-xl py-1 px-3 rounded-md hover:scale-105 cursor-pointer transition duration-200"
                 >
                   <i className="fa-solid fa-trash"></i>
                 </button>
