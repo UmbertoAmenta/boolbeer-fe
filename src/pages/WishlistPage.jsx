@@ -4,13 +4,12 @@ import { Link } from "react-router-dom";
 import { generateSlug } from "../utils/slug";
 import { useParams } from "react-router-dom";
 
-
 const WishlistPage = () => {
   const { wishlist, removeFromWishlist } = useWishlist();
   const { slug } = useParams();
 
   return (
-    <div className="max-w-6xl mt-12 mx-auto p-4">
+    <div className="max-w-6xl mx-auto p-4">
       <div className="">
         {wishlist.length === 0 ? (
           <div className="flex flex-col items-center justify-center">
@@ -30,7 +29,6 @@ const WishlistPage = () => {
             <h2 className="text-2xl mb-4 font-bold">La tua wishlist</h2>
 
             {wishlist.map((item) => (
-
               <li key={item.product_id} className="flex justify-between mb-4">
                 <Link to={`/product/${item.product_id}`}>
                   <div className="flex items-center gap-4">
@@ -47,12 +45,9 @@ const WishlistPage = () => {
                   </div>
                 </Link>
                 <button
-
                   onClick={() => removeFromWishlist(item.product_id)}
-                  className=" text-xl py-1 px-3 rounded-md hover:text-2xl cursor-pointer">
-
-       
-
+                  className=" text-xl py-1 px-3 rounded-md hover:text-2xl cursor-pointer"
+                >
                   <i className="fa-solid fa-trash"></i>
                 </button>
               </li>
