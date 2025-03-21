@@ -12,7 +12,7 @@ export default function CartPage() {
 
   if (cart.length === 0) {
     return (
-      <div className="mt-10 flex flex-col items-center">
+      <div className="mt-12 flex flex-col items-center">
         <Link to="/search">
           <img
             src="https://cdn-icons-png.flaticon.com/512/11329/11329060.png"
@@ -53,18 +53,18 @@ export default function CartPage() {
               </div>
               <div className="flex items-center space-x-4">
                 <button
-                  onClick={() => incrementQuantity(item.product_id)}
-                  className="text-gray-800 hover:text-gray-600 cursor-pointer text-2xl"
-                >
-                  <i className="fa-solid fa-plus"></i>
-                </button>
-                <button
                   onClick={() =>
                     decrementQuantity(item.product_id, item.quantity)
                   }
                   className="text-gray-800 hover:text-gray-600 cursor-pointer text-2xl"
                 >
                   <i className="fa-solid fa-minus"></i>
+                </button>
+                <button
+                  onClick={() => incrementQuantity(item.product_id)}
+                  className="text-gray-800 hover:text-gray-600 cursor-pointer text-2xl"
+                >
+                  <i className="fa-solid fa-plus"></i>
                 </button>
               </div>
             </li>
