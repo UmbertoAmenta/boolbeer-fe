@@ -29,7 +29,10 @@ const WishlistPage = () => {
             <h2 className="text-2xl mb-4 font-bold">La tua wishlist</h2>
 
             {wishlist.map((item) => (
-              <li key={item.product_id} className="flex justify-between mb-4">
+              <li
+                key={item.product_id}
+                className="flex justify-between items-center bg-white my-2 px-4 rounded-lg shadow-md"
+              >
                 <Link to={`/product/${item.product_id}`}>
                   <div className="flex items-center gap-4">
                     <div>
@@ -46,7 +49,7 @@ const WishlistPage = () => {
                 </Link>
                 <button
                   onClick={() => removeFromWishlist(item.product_id)}
-                  className=" text-xl py-1 px-3 rounded-md hover:text-2xl cursor-pointer"
+                  className=" text-xl py-1 px-3 rounded-md  text-neutral-800 transition duration-200 hover:text-neutral-900 hover:scale-110 cursor-pointer"
                 >
                   <i className="fa-solid fa-trash"></i>
                 </button>

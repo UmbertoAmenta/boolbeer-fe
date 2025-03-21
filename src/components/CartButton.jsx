@@ -10,7 +10,6 @@ const CartButton = ({ product }) => {
     try {
       // Usa il metodo addToCart del contesto
       await addToCart(product, quantity);
-
       setShowPopup(true);
       setTimeout(() => setShowPopup(false), 3000);
     } catch (error) {
@@ -37,11 +36,14 @@ const CartButton = ({ product }) => {
           <i className="fa-solid fa-cart-shopping bg-orange-200 p-3 rounded hover:bg-orange-400 transition duration-200 mr-2"></i>
         </button>
       </div>
-      {showPopup && (
-        <div className="absolute top-2/3 right-0 bg-green-700 text-white p-3 rounded-lg shadow-lg m-3">
-          Prodotto aggiunto al carrello!
-        </div>
-      )}
+      {/* Pop-up con effetto fade-in/fade-out */}
+      <div
+        className={`absolute bottom-0 right-0 bg-green-700 text-white p-3 rounded-lg shadow-lg m-3 transition-opacity duration-500 ${
+          showPopup ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+      >
+        Prodotto aggiunto al carrello!
+      </div>
     </div>
   );
 };

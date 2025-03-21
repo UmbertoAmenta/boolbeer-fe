@@ -83,8 +83,8 @@ export default function ProductPage() {
             <h3 className="text-xl font-bold">
               {product.product_name} - {product.product_volume}ml
             </h3>
-            <h2 className="my-2 text-2xl text-green-700">
-              <em>{product.product_price}€</em>
+            <h2 className="my-2 text-2xl font-bold text-green-700">
+              {product.product_price}€
             </h2>
             <ul className="my-4 flex flex-col gap-y-4">
               <li>
