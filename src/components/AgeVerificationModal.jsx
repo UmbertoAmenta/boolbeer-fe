@@ -21,7 +21,7 @@ export default function AgeVerificationModal({ onClose, onDeny }) {
     e.preventDefault();
 
     if (!email.trim()) {
-      setResult("Verifica completata senza email.");
+      setResult("Benvenuto!");
       setStep("resultMessage");
       return;
     }
@@ -58,7 +58,7 @@ export default function AgeVerificationModal({ onClose, onDeny }) {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/80 z-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-black/80 z-50 shadow-lg">
       <div className="relative bg-orange-100 p-8 rounded-xl shadow-lg max-w-md mx-auto text-center w-150">
         {/* Bottone "X" visibile solo nella schermata dell'email */}
         {step === "emailInput" && (
@@ -93,7 +93,7 @@ export default function AgeVerificationModal({ onClose, onDeny }) {
           <>
             {" "}
             <h2 className="text-2xl font-bold mb-4">
-              Inserisci la tua email (opzionale)
+              Lascia la tua e-mail per ricevere uno sconto!
             </h2>{" "}
             <form onSubmit={handleEmailSubmit}>
               {" "}
@@ -106,7 +106,7 @@ export default function AgeVerificationModal({ onClose, onDeny }) {
               />{" "}
               <button
                 type="submit"
-                className="px-4 py-2 bg-blue-500 text-white rounded cursor-pointer"
+                className="px-4 py-2 bg-orange-400 hover:bg-orange-500 transition rounded cursor-pointer font-medium"
               >
                 {" "}
                 Invia{" "}
@@ -121,7 +121,7 @@ export default function AgeVerificationModal({ onClose, onDeny }) {
             {!denied && (
               <button
                 onClick={onClose}
-                className="px-4 py-2 bg-gray-500 text-white rounded"
+                className="px-4 py-2 bg-gray-400 hover:bg-gray-500 transition rounded cursor-pointer"
               >
                 Chiudi
               </button>
