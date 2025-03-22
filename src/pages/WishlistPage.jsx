@@ -7,6 +7,8 @@ import { useParams } from "react-router-dom";
 const WishlistPage = () => {
   const { wishlist, removeFromWishlist } = useWishlist();
   const { slug } = useParams();
+  // Calcola la quantità totale dei prodotti nel carrello
+  const totalItemWishlist = wishlist.length;
 
   return (
     <div className="max-w-6xl mx-auto p-4">
@@ -21,18 +23,23 @@ const WishlistPage = () => {
               />
             </Link>
             <p className="text-gray-500">
-              La tua wishlist è vuota! Aggiungi prodotti che ti interessano.
+              La tua lista dei desideri è vuota! Aggiungi prodotti che ti
+              interessano.
             </p>
           </div>
         ) : (
           <ul className="bg-white/50 p-6 rounded-lg shadow-md">
-            <h2 className="text-2xl mb-4 font-bold">La tua wishlist</h2>
+            <h2 className="text-3xl mb-4 font-bold">
+              La tua lista dei desideri
+            </h2>
+            <p className="text-xl mb-4">
+              Elementi nella tua lista dei desideri: {totalItemWishlist}
+            </p>
 
             {wishlist.map((item) => (
               <li
                 key={item.product_id}
-                className="flex justify-between items-center bg-white my-2 px-4 rounded-lg shadow-md"
-              >
+                className="flex justify-between items-center bg-white my-2 px-4 rounded-lg shadow-md">
                 <Link to={`/product/${generateSlug(item.product_name)}`}>
                   <div className="flex items-center gap-4">
                     <div>
@@ -49,8 +56,7 @@ const WishlistPage = () => {
                 </Link>
                 <button
                   onClick={() => removeFromWishlist(item.product_id)}
-                  className=" text-xl py-1 px-3 rounded-md  text-neutral-800 transition duration-200 hover:text-neutral-900 hover:scale-110 cursor-pointer"
-                >
+                  className=" text-xl py-1 px-3 rounded-md  text-neutral-800 transition duration-200 hover:text-neutral-900 hover:scale-110 cursor-pointer">
                   <i className="fa-solid fa-trash"></i>
                 </button>
               </li>
