@@ -28,21 +28,17 @@ export default function Footer() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <i className="fab fa-facebook text-2xl text-gray-600 hover:text-gray-800"></i>
+            <i className="fab fa-facebook text-2xl text-gray-600 hover:text-gray-800 transition duration-200"></i>
           </a>
-          <a
-            href="https://twitter.com"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <i className="fab fa-twitter text-2xl text-gray-600 hover:text-gray-800"></i>
+          <a href="https://x.com" target="_blank" rel="noopener noreferrer">
+            <i className="fab fa-x-twitter text-2xl text-gray-600 hover:text-gray-800 transition duration-200"></i>
           </a>
           <a
             href="https://instagram.com"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <i className="fab fa-instagram text-2xl text-gray-600 hover:text-gray-800"></i>
+            <i className="fab fa-instagram text-2xl text-gray-600 hover:text-gray-800 transition duration-200"></i>
           </a>
         </div>
       </div>
