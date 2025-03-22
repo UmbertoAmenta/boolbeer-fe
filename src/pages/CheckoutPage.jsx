@@ -8,6 +8,16 @@ const stripePromise = loadStripe(
 );
 
 export default function CheckoutPage() {
+  // Stato per il codice sconto e lo stato di validità
+  const [discountCode, setDiscountCode] = useState("");
+  const [discount, setDiscount] = useState(0);
+  const [isDiscountApplied, setIsDiscountApplied] = useState(false);
+  const [isDiscountValid, setIsDiscountValid] = useState(true);
+  // Stato per il metodo di fatturazione
+  const [isBillingSameAsShipping, setIsBillingSameAsShipping] = useState(false);
+  const [isBillingDiffShipping, setIsBillingDiffShipping] = useState(false);
+
+  // Accesso al carrello dal contesto
   const { cart } = useCart();
 
   // Stato per dati di spedizione e fatturazione
@@ -21,7 +31,6 @@ export default function CheckoutPage() {
     zipCode: "",
     phone: "",
   });
-
   const [billingData, setBillingData] = useState({
     name: "",
     surname: "",
@@ -35,41 +44,52 @@ export default function CheckoutPage() {
     vatNumber: "",
   });
 
-  const [discountCode, setDiscountCode] = useState("");
-  const [discount, setDiscount] = useState(0);
-  const [isDiscountApplied, setIsDiscountApplied] = useState(false);
-  const [isDiscountValid, setIsDiscountValid] = useState(true);
-  const [isBillingSameAsShipping, setIsBillingSameAsShipping] = useState(false);
-  const [isBillingDiffShipping, setIsBillingDiffShipping] = useState(false);
+  // Funzione per resettare i dati di fatturazione
+  const resetBillingData = () => ({
+    name: "",
+    surname: "",
+    email: "",
+    address: "",
+    country: "",
+    city: "",
+    zipCode: "",
+    phone: "",
+    taxCode: "",
+    vatNumber: "",
+  });
 
+  // Gestisce il cambio dei dati negli input (spedizione e fatturazione)
   const handlerInputChange = (e, setInfo) => {
     const { name, value } = e.target;
     setInfo((prevInfo) => ({ ...prevInfo, [name]: value }));
   };
 
+  // Gestisce il cambio di opzione della fatturazione
   const handleBillingOptionChange = (option) => {
     if (option === "same") {
-      setIsBillingSameAsShipping(true);
+      // Alterna lo stato di isBillingSameAsShipping (se era true diventa false e viceversa)
+      setIsBillingSameAsShipping((prev) => !prev);
+      // Disattiva l'opzione "fatturazione diversa"
       setIsBillingDiffShipping(false);
-      setBillingData((prev) => ({
-        ...prev,
-        ...shippingData,
-      }));
+
+      // Se l'opzione è selezionata, copia i dati di spedizione nei dati di fatturazione
+      // Se viene deselezionata, resetta i dati di fatturazione
+      setBillingData((prev) =>
+        !isBillingSameAsShipping
+          ? { ...prev, ...shippingData }
+          : resetBillingData()
+      );
     } else {
+      // Alterna lo stato di isBillingDiffShipping (se era true diventa false e viceversa)
+      setIsBillingDiffShipping((prev) => !prev);
+      // Disattiva l'opzione "fatturazione uguale alla spedizione"
       setIsBillingSameAsShipping(false);
-      setIsBillingDiffShipping(true);
-      setBillingData({
-        name: "",
-        surname: "",
-        email: "",
-        address: "",
-        country: "",
-        city: "",
-        zipCode: "",
-        phone: "",
-        taxCode: "",
-        vatNumber: "",
-      });
+
+      // Se l'opzione è selezionata, resetta i dati di fatturazione per farli compilare manualmente
+      // Se viene deselezionata, mantiene i dati già inseriti
+      setBillingData((prev) =>
+        !isBillingDiffShipping ? resetBillingData() : prev
+      );
     }
   };
 
@@ -97,6 +117,7 @@ export default function CheckoutPage() {
     return totalPrice() - totalPrice() * discount;
   };
 
+  // Applica il codice sconto
   const applyDiscount = () => {
     if (discountCode === "ALCOOL4EVER") {
       setDiscount(0.1);
@@ -109,12 +130,14 @@ export default function CheckoutPage() {
     }
   };
 
+  // Gestisce il cambio del codice sconto
   const handlerDiscountCodeChange = (e) => {
     setDiscountCode(e.target.value.toUpperCase());
     setIsDiscountApplied(false);
     setIsDiscountValid(true);
   };
 
+  // Gestisce il submit del checkout
   const handlerSubmitForm = async (e) => {
     e.preventDefault();
 
@@ -159,7 +182,7 @@ export default function CheckoutPage() {
       <div className="md:col-span-2 p-4 bg-white/50  rounded-lg shadow-md">
         <form onSubmit={handlerSubmitForm}>
           {/* Indirizzo di Spedizione */}
-          <div className="">
+          <div>
             <h3 className="text-xl font-semibold mb-3">
               Indirizzo di Spedizione
             </h3>
@@ -245,25 +268,26 @@ export default function CheckoutPage() {
           </div>
 
           {/* Scelta per la fatturazione */}
-          <label>La fatturazione è uguale all'indirizzo di spedizione:</label>
-          <br />
-          <input
-            type="radio"
-            name="billingOption"
-            value="same"
-            checked={isBillingSameAsShipping}
-            onChange={() => handleBillingOptionChange("same")}
-          />
-          <label> Si</label>
-          <br />
-          <input
-            type="radio"
-            name="billingOption"
-            value="different"
-            checked={isBillingDiffShipping}
-            onChange={() => handleBillingOptionChange("different")}
-          />
-          <label> No</label>
+          <label className="flex items-center gap-2 mb-2">
+            <input
+              type="checkbox"
+              name="billingOption"
+              checked={isBillingSameAsShipping}
+              onChange={() => handleBillingOptionChange("same")}
+              className="form-checkbox"
+            />
+            La fatturazione è uguale all'indirizzo di spedizione
+          </label>
+          <label className="flex items-center gap-2 mb-2">
+            <input
+              type="checkbox"
+              name="billingOption"
+              checked={isBillingDiffShipping}
+              onChange={() => handleBillingOptionChange("different")}
+              className="form-checkbox"
+            />
+            La fatturazione è diversa dall'indirizzo di spedizione
+          </label>
 
           {/* Indirizzo di fatturazione uguale */}
           {isBillingSameAsShipping && (
@@ -470,6 +494,8 @@ export default function CheckoutPage() {
               </div>
             </div>
           )}
+
+          {/* Bottone per il pagamento */}
           <div className="flex justify-end">
             <button
               type="submit"
@@ -480,6 +506,7 @@ export default function CheckoutPage() {
           </div>
         </form>
       </div>
+
       {/* Riepilogo Ordine */}
       <div className="bg-white/50 p-4 rounded-lg shadow-md">
         <h3 className="text-xl font-semibold mb-3">Riepilogo Ordine</h3>
