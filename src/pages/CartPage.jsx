@@ -9,6 +9,7 @@ export default function CartPage() {
   const total = cart
     .reduce((acc, item) => acc + item.price * item.quantity, 0)
     .toFixed(2);
+  const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   if (cart.length === 0) {
     return (
@@ -32,12 +33,15 @@ export default function CartPage() {
     <div className="max-w-6xl mx-auto p-4">
       <div className="bg-white/50 p-6 rounded-lg shadow-md">
         <h2 className="text-2xl mb-4 font-bold">Il tuo carrello</h2>
+        <p className="text-xl mb-4">
+          Elementi nel tuo carrello: {totalQuantity}
+        </p>
+
         <ul>
           {cart.map((item) => (
             <li
               key={item.product_id}
-              className="flex justify-between items-center bg-white my-2 px-4 rounded-lg shadow-md"
-            >
+              className="flex justify-between items-center bg-white my-2 px-4 rounded-lg shadow-md">
               <Link to={`/product/${generateSlug(item.name)}`}>
                 <div className="flex items-center gap-4">
                   <img
@@ -58,14 +62,12 @@ export default function CartPage() {
                   onClick={() =>
                     decrementQuantity(item.product_id, item.quantity)
                   }
-                  className="text-gray-800 hover:text-gray-600 cursor-pointer text-2xl"
-                >
+                  className="text-gray-800 hover:text-gray-600 cursor-pointer text-2xl">
                   <i className="fa-solid fa-minus"></i>
                 </button>
                 <button
                   onClick={() => incrementQuantity(item.product_id)}
-                  className="text-gray-800 hover:text-gray-600 cursor-pointer text-2xl"
-                >
+                  className="text-gray-800 hover:text-gray-600 cursor-pointer text-2xl">
                   <i className="fa-solid fa-plus"></i>
                 </button>
               </div>
