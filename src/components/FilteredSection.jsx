@@ -22,7 +22,7 @@ export default function FilteredSection({ children, filterLogic }) {
     <div className="rounded-lg mx-auto">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         {products.map((product) => (
-          <div className="col" key={product.product_id}>
+          <div className="col" key={product.product_slug}>
             <ProductCard
               name={product.product_name}
               image={product.product_image}
@@ -30,8 +30,9 @@ export default function FilteredSection({ children, filterLogic }) {
               abv={product.product_abv}
               description={product.product_description}
               price={product.product_price}
-              link={`product/${product.product_id}`}
               product_disponibility={product.product_disponibility}
+              brand={product.brand_logo}
+              slug={product.product_slug}
             />
           </div>
         ))}
