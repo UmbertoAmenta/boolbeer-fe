@@ -5,16 +5,19 @@ import ProductCard from "../components/ProductCard";
 export default function SearchResultsPage() {
   const { products } = useSearchContext(); // Ottiene i prodotti filtrati dal contesto di ricerca
   const [sortOption, setSortOption] = useState("recent"); // Variabile per la gestione dell'opzione di ordinamento
+  const [sortOrder, setSortOrder] = useState("asc"); // Variabile per la gestione dell'ordine di ordinamento
 
   // Ordinamento dei prodotti (.localeCompare distribuisce più stringhe in ordine alfabetico)
   const sortedProducts = [...products].sort((a, b) => {
+    let userChoose = 0;
     if (sortOption === "price") {
-      return a.product_price - b.product_price;
+      userChoose = a.product_price - b.product_price;
     } else if (sortOption === "name") {
-      return a.product_name.localeCompare(b.product_name);
+      userChoose = a.product_name.localeCompare(b.product_name);
     } else {
-      return b.product_id - a.product_id;
+      userChoose = b.product_id - a.product_id;
     }
+    return sortOrder === "asc" ? userChoose : -userChoose;
   });
 
   return (
@@ -30,6 +33,14 @@ export default function SearchResultsPage() {
             <option value="recent">Recenti</option>
             <option value="price">Prezzo</option>
             <option value="name">Nome</option>
+          </select>
+          <select
+            value={sortOrder}
+            onChange={(e) => setSortOrder(e.target.value)}
+            className="ml-2 rounded font-light"
+          >
+            <option value="asc">Ascendente</option>
+            <option value="desc">Discendente</option>
           </select>
         </div>
         <p className="py-2">
