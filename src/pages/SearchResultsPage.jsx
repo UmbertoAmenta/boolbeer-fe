@@ -32,7 +32,10 @@ export default function SearchResultsPage() {
             <option value="name">Nome</option>
           </select>
         </div>
-        <p className="py-2">N° risultati ricerca: {sortedProducts.length}</p>
+        <p className="py-2">
+          <span className="font-semibold">N° risultati ricerca:</span>{" "}
+          {sortedProducts.length}
+        </p>
       </div>
       {sortedProducts.length > 0 ? ( // Se ci sono risultati, mostra la lista dei prodotti
         <div>
