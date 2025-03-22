@@ -1,11 +1,27 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSearchContext } from "../context/SearchContext";
+import { useLocation, useNavigate } from "react-router-dom";
+
 import ProductCard from "../components/ProductCard";
 
 export default function SearchResultsPage() {
   const { products } = useSearchContext(); // Ottiene i prodotti filtrati dal contesto di ricerca
-  const [sortOption, setSortOption] = useState("recent"); // Variabile per la gestione dell'opzione di ordinamento
-  const [sortOrder, setSortOrder] = useState("asc"); // Variabile per la gestione dell'ordine di ordinamento
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const queryParams = new URLSearchParams(location.search);
+  const initialSortOption = queryParams.get("sortOption") || "recent";
+  const initialSortOrder = queryParams.get("sortOrder") || "asc";
+
+  const [sortOption, setSortOption] = useState(initialSortOption); // Variabile per la gestione dell'opzione di ordinamento
+  const [sortOrder, setSortOrder] = useState(initialSortOrder); // Variabile per la gestione dell'ordine di ordinamento
+
+  useEffect(() => {
+    const params = new URLSearchParams();
+    params.set("sortOption", sortOption);
+    params.set("sortOrder", sortOrder);
+    navigate({ search: params.toString() });
+  }, [sortOption, sortOrder, navigate]);
 
   // Ordinamento dei prodotti (.localeCompare distribuisce più stringhe in ordine alfabetico)
   const sortedProducts = [...products].sort((a, b) => {
