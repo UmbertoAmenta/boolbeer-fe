@@ -183,14 +183,15 @@ export default function CheckoutPage() {
         <form onSubmit={handlerSubmitForm}>
           {/* Indirizzo di Spedizione */}
           <div>
-            <h3 className="text-xl font-semibold mb-3">
-              Indirizzo di Spedizione
-            </h3>
+            <h3 className="text-xl font-semibold">Indirizzo di Spedizione</h3>
+            <h4 className="text-sm text-neutral-500 mb-3">
+              I campi contrassegnati con l'asterisco sono obbligatori
+            </h4>
             <div className="flex justify-between gap-2">
               <input
                 type="text"
                 name="name"
-                placeholder="Nome"
+                placeholder="Nome*"
                 value={shippingData.name}
                 onChange={handlerShippingDataChange}
                 className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
@@ -199,7 +200,7 @@ export default function CheckoutPage() {
               <input
                 type="text"
                 name="surname"
-                placeholder="Cognome"
+                placeholder="Cognome*"
                 value={shippingData.surname}
                 onChange={handlerShippingDataChange}
                 className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
@@ -210,7 +211,7 @@ export default function CheckoutPage() {
               <input
                 type="email"
                 name="email"
-                placeholder="E-mail"
+                placeholder="E-mail*"
                 value={shippingData.email}
                 onChange={handlerShippingDataChange}
                 className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
@@ -220,7 +221,7 @@ export default function CheckoutPage() {
                 type="number"
                 name="phone"
                 pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
-                placeholder="Telefono"
+                placeholder="Telefono*"
                 value={shippingData.phone}
                 onChange={handlerShippingDataChange}
                 className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
@@ -230,7 +231,7 @@ export default function CheckoutPage() {
             <input
               type="text"
               name="address"
-              placeholder="Indirizzo"
+              placeholder="Indirizzo*"
               value={shippingData.address}
               onChange={handlerShippingDataChange}
               className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
@@ -240,7 +241,7 @@ export default function CheckoutPage() {
               <input
                 type="text"
                 name="country"
-                placeholder="Nazione"
+                placeholder="Nazione*"
                 value={shippingData.country}
                 onChange={handlerShippingDataChange}
                 className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
@@ -249,7 +250,7 @@ export default function CheckoutPage() {
               <input
                 type="text"
                 name="city"
-                placeholder="Città"
+                placeholder="Città*"
                 value={shippingData.city}
                 onChange={handlerShippingDataChange}
                 className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
@@ -258,7 +259,7 @@ export default function CheckoutPage() {
               <input
                 type="text"
                 name="zipCode"
-                placeholder="Codice postale"
+                placeholder="Codice postale*"
                 value={shippingData.zipCode}
                 onChange={handlerShippingDataChange}
                 className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
@@ -311,7 +312,7 @@ export default function CheckoutPage() {
                 <input
                   type="text"
                   name="taxCode"
-                  placeholder="Codice Fiscale"
+                  placeholder="Codice Fiscale*"
                   value={billingData.taxCode}
                   onChange={(e) =>
                     setBillingData((prev) => ({
@@ -349,7 +350,7 @@ export default function CheckoutPage() {
                 <input
                   type="text"
                   name="name"
-                  placeholder="Nome"
+                  placeholder="Nome*"
                   value={billingData.name}
                   onChange={(e) =>
                     setBillingData((prev) => ({
@@ -363,7 +364,7 @@ export default function CheckoutPage() {
                 <input
                   type="text"
                   name="surname"
-                  placeholder="Cognome"
+                  placeholder="Cognome*"
                   value={billingData.surname}
                   onChange={(e) =>
                     setBillingData((prev) => ({
@@ -379,7 +380,7 @@ export default function CheckoutPage() {
                 <input
                   type="email"
                   name="email"
-                  placeholder="E-mail"
+                  placeholder="E-mail*"
                   value={billingData.email}
                   onChange={(e) =>
                     setBillingData((prev) => ({
@@ -393,7 +394,7 @@ export default function CheckoutPage() {
                 <input
                   type="number"
                   name="phone"
-                  placeholder="Telefono"
+                  placeholder="Telefono*"
                   value={billingData.phone}
                   onChange={(e) =>
                     setBillingData((prev) => ({
@@ -408,7 +409,7 @@ export default function CheckoutPage() {
               <input
                 type="text"
                 name="address"
-                placeholder="Indirizzo"
+                placeholder="Indirizzo*"
                 value={billingData.address}
                 onChange={(e) =>
                   setBillingData((prev) => ({
@@ -423,7 +424,7 @@ export default function CheckoutPage() {
                 <input
                   type="text"
                   name="country"
-                  placeholder="Nazione"
+                  placeholder="Nazione*"
                   value={billingData.country}
                   onChange={(e) =>
                     setBillingData((prev) => ({
@@ -437,7 +438,7 @@ export default function CheckoutPage() {
                 <input
                   type="text"
                   name="city"
-                  placeholder="Città"
+                  placeholder="Città*"
                   value={billingData.city}
                   onChange={(e) =>
                     setBillingData((prev) => ({
@@ -451,7 +452,7 @@ export default function CheckoutPage() {
                 <input
                   type="text"
                   name="zipCode"
-                  placeholder="Codice postale"
+                  placeholder="Codice postale*"
                   value={billingData.zipCode}
                   onChange={(e) =>
                     setBillingData((prev) => ({
@@ -467,7 +468,7 @@ export default function CheckoutPage() {
                 <input
                   type="text"
                   name="taxCode"
-                  placeholder="Codice Fiscale"
+                  placeholder="Codice Fiscale*"
                   value={billingData.taxCode}
                   onChange={(e) =>
                     setBillingData((prev) => ({
