@@ -154,13 +154,12 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="max-w-5xl m-auto p-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div className="max-w-5xl m-auto py-8 px-4 grid grid-cols-1 md:grid-cols-3 gap-4">
       {/* Sezione Checkout */}
-      <div className="md:col-span-2 bg-white/50 p-6 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold">Checkout</h2>
+      <div className="md:col-span-2 p-4 bg-white/50  rounded-lg shadow-md">
         <form onSubmit={handlerSubmitForm}>
           {/* Indirizzo di Spedizione */}
-          <div className="my-3">
+          <div className="">
             <h3 className="text-xl font-semibold mb-3">
               Indirizzo di Spedizione
             </h3>
@@ -482,7 +481,7 @@ export default function CheckoutPage() {
         </form>
       </div>
       {/* Riepilogo Ordine */}
-      <div className="bg-white/50 p-6 rounded-lg shadow-md">
+      <div className="bg-white/50 p-4 rounded-lg shadow-md">
         <h3 className="text-xl font-semibold mb-3">Riepilogo Ordine</h3>
         <ul>
           {cart.map((product) => (
@@ -512,10 +511,10 @@ export default function CheckoutPage() {
           >
             {isDiscountApplied ? "Codice Valido" : "Applica"}
           </button>
-          {!isDiscountValid && (
-            <div className="text-red-500 mt-2">Codice sconto non valido</div>
-          )}
         </div>
+        {!isDiscountValid && (
+          <p className="text-red-500 mt-2">Codice sconto non valido</p>
+        )}
         <div className="text-xl font-semibold mt-4">
           Totale:{" "}
           {isDiscountApplied ? (
