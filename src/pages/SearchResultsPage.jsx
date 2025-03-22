@@ -19,17 +19,20 @@ export default function SearchResultsPage() {
 
   return (
     <div className="container xl:max-w-320 mx-auto px-4">
-      <div className="py-4 text-xl">
-        <label className="font-semibold">Ordina per:</label>
-        <select
-          value={sortOption}
-          onChange={(e) => setSortOption(e.target.value)}
-          className="ml-2 rounded font-light"
-        >
-          <option value="recent">Recenti</option>
-          <option value="price">Prezzo</option>
-          <option value="name">Nome</option>
-        </select>
+      <div className="py-4 text-xl flex items-center justify-evenly">
+        <div>
+          <label className="font-semibold">Ordina per:</label>
+          <select
+            value={sortOption}
+            onChange={(e) => setSortOption(e.target.value)}
+            className="ml-2 rounded font-light"
+          >
+            <option value="recent">Recenti</option>
+            <option value="price">Prezzo</option>
+            <option value="name">Nome</option>
+          </select>
+        </div>
+        <p className="py-2">N° risultati ricerca: {sortedProducts.length}</p>
       </div>
       {sortedProducts.length > 0 ? ( // Se ci sono risultati, mostra la lista dei prodotti
         <div>
