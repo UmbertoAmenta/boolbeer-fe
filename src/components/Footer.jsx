@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Footer() {
   return (
-    <footer className="bg-orange-200 text-gray-800 p-8 shadow-lg ">
+    <footer className="bg-orange-200 text-gray-800 p-8">
       <div className="container mx-auto text-center">
         {/* Sezione principale */}
         <div className="mb-4">
@@ -28,21 +28,17 @@ export default function Footer() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <i className="fab fa-facebook text-2xl text-gray-600 hover:text-gray-800"></i>
+            <i className="fab fa-facebook text-2xl text-gray-600 hover:text-gray-800 transition duration-200"></i>
           </a>
-          <a
-            href="https://twitter.com"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <i className="fab fa-twitter text-2xl text-gray-600 hover:text-gray-800"></i>
+          <a href="https://x.com" target="_blank" rel="noopener noreferrer">
+            <i className="fab fa-x-twitter text-2xl text-gray-600 hover:text-gray-800 transition duration-200"></i>
           </a>
           <a
             href="https://instagram.com"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <i className="fab fa-instagram text-2xl text-gray-600 hover:text-gray-800"></i>
+            <i className="fab fa-instagram text-2xl text-gray-600 hover:text-gray-800 transition duration-200"></i>
           </a>
         </div>
       </div>

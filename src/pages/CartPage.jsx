@@ -30,7 +30,7 @@ export default function CartPage() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto p-4">
+    <div className="max-w-6xl mx-auto py-8 px-4">
       <div className="bg-white/50 p-6 rounded-lg shadow-md">
         <h2 className="text-2xl mb-4 font-bold">Il tuo carrello</h2>
         <p className="text-xl mb-4">
@@ -79,8 +79,8 @@ export default function CartPage() {
             Totale: <span className="font-bold">{total}€</span>
           </div>
           <Link to="/checkout">
-            <button className="font-medium text-neutral-800 transition duration-200 hover:text-neutral-900 hover:scale-105 cursor-pointer bg-orange-200 hover:bg-orange-400 p-2 rounded">
-              Procedi al check-out
+            <button className="font-normaltext-neutral-800 transition duration-200 hover:text-neutral-900 cursor-pointer bg-orange-200 hover:bg-orange-400 p-2 rounded">
+              Procedi al pagamento
             </button>
           </Link>
         </div>

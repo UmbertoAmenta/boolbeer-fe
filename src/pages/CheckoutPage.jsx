@@ -8,6 +8,16 @@ const stripePromise = loadStripe(
 );
 
 export default function CheckoutPage() {
+  // Stato per il codice sconto e lo stato di validità
+  const [discountCode, setDiscountCode] = useState("");
+  const [discount, setDiscount] = useState(0);
+  const [isDiscountApplied, setIsDiscountApplied] = useState(false);
+  const [isDiscountValid, setIsDiscountValid] = useState(true);
+  // Stato per il metodo di fatturazione
+  const [isBillingSameAsShipping, setIsBillingSameAsShipping] = useState(false);
+  const [isBillingDiffShipping, setIsBillingDiffShipping] = useState(false);
+
+  // Accesso al carrello dal contesto
   const { cart } = useCart();
 
   // Stato per dati di spedizione e fatturazione
@@ -21,7 +31,6 @@ export default function CheckoutPage() {
     zipCode: "",
     phone: "",
   });
-
   const [billingData, setBillingData] = useState({
     name: "",
     surname: "",
@@ -35,41 +44,52 @@ export default function CheckoutPage() {
     vatNumber: "",
   });
 
-  const [discountCode, setDiscountCode] = useState("");
-  const [discount, setDiscount] = useState(0);
-  const [isDiscountApplied, setIsDiscountApplied] = useState(false);
-  const [isDiscountValid, setIsDiscountValid] = useState(true);
-  const [isBillingSameAsShipping, setIsBillingSameAsShipping] = useState(false);
-  const [isBillingDiffShipping, setIsBillingDiffShipping] = useState(false);
+  // Funzione per resettare i dati di fatturazione
+  const resetBillingData = () => ({
+    name: "",
+    surname: "",
+    email: "",
+    address: "",
+    country: "",
+    city: "",
+    zipCode: "",
+    phone: "",
+    taxCode: "",
+    vatNumber: "",
+  });
 
+  // Gestisce il cambio dei dati negli input (spedizione e fatturazione)
   const handlerInputChange = (e, setInfo) => {
     const { name, value } = e.target;
     setInfo((prevInfo) => ({ ...prevInfo, [name]: value }));
   };
 
+  // Gestisce il cambio di opzione della fatturazione
   const handleBillingOptionChange = (option) => {
     if (option === "same") {
-      setIsBillingSameAsShipping(true);
+      // Alterna lo stato di isBillingSameAsShipping (se era true diventa false e viceversa)
+      setIsBillingSameAsShipping((prev) => !prev);
+      // Disattiva l'opzione "fatturazione diversa"
       setIsBillingDiffShipping(false);
-      setBillingData((prev) => ({
-        ...prev,
-        ...shippingData,
-      }));
+
+      // Se l'opzione è selezionata, copia i dati di spedizione nei dati di fatturazione
+      // Se viene deselezionata, resetta i dati di fatturazione
+      setBillingData((prev) =>
+        !isBillingSameAsShipping
+          ? { ...prev, ...shippingData }
+          : resetBillingData()
+      );
     } else {
+      // Alterna lo stato di isBillingDiffShipping (se era true diventa false e viceversa)
+      setIsBillingDiffShipping((prev) => !prev);
+      // Disattiva l'opzione "fatturazione uguale alla spedizione"
       setIsBillingSameAsShipping(false);
-      setIsBillingDiffShipping(true);
-      setBillingData({
-        name: "",
-        surname: "",
-        email: "",
-        address: "",
-        country: "",
-        city: "",
-        zipCode: "",
-        phone: "",
-        taxCode: "",
-        vatNumber: "",
-      });
+
+      // Se l'opzione è selezionata, resetta i dati di fatturazione per farli compilare manualmente
+      // Se viene deselezionata, mantiene i dati già inseriti
+      setBillingData((prev) =>
+        !isBillingDiffShipping ? resetBillingData() : prev
+      );
     }
   };
 
@@ -97,6 +117,7 @@ export default function CheckoutPage() {
     return totalPrice() - totalPrice() * discount;
   };
 
+  // Applica il codice sconto
   const applyDiscount = () => {
     if (discountCode === "ALCOOL4EVER") {
       setDiscount(0.1);
@@ -109,12 +130,14 @@ export default function CheckoutPage() {
     }
   };
 
+  // Gestisce il cambio del codice sconto
   const handlerDiscountCodeChange = (e) => {
     setDiscountCode(e.target.value.toUpperCase());
     setIsDiscountApplied(false);
     setIsDiscountValid(true);
   };
 
+  // Gestisce il submit del checkout
   const handlerSubmitForm = async (e) => {
     e.preventDefault();
 
@@ -154,21 +177,21 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="max-w-5xl m-auto p-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div className="max-w-5xl m-auto py-8 px-4 grid grid-cols-1 md:grid-cols-3 gap-4">
       {/* Sezione Checkout */}
-      <div className="md:col-span-2 bg-white/50 p-6 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold">Checkout</h2>
+      <div className="md:col-span-2 p-4 bg-white/50  rounded-lg shadow-md">
         <form onSubmit={handlerSubmitForm}>
           {/* Indirizzo di Spedizione */}
-          <div className="my-3">
-            <h3 className="text-xl font-semibold mb-3">
-              Indirizzo di Spedizione
-            </h3>
+          <div>
+            <h3 className="text-xl font-semibold">Indirizzo di Spedizione</h3>
+            <h4 className="text-sm text-neutral-500 mb-3">
+              I campi contrassegnati con l'asterisco sono obbligatori
+            </h4>
             <div className="flex justify-between gap-2">
               <input
                 type="text"
                 name="name"
-                placeholder="Nome"
+                placeholder="Nome*"
                 value={shippingData.name}
                 onChange={handlerShippingDataChange}
                 className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
@@ -177,7 +200,7 @@ export default function CheckoutPage() {
               <input
                 type="text"
                 name="surname"
-                placeholder="Cognome"
+                placeholder="Cognome*"
                 value={shippingData.surname}
                 onChange={handlerShippingDataChange}
                 className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
@@ -188,7 +211,7 @@ export default function CheckoutPage() {
               <input
                 type="email"
                 name="email"
-                placeholder="E-mail"
+                placeholder="E-mail*"
                 value={shippingData.email}
                 onChange={handlerShippingDataChange}
                 className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
@@ -198,7 +221,7 @@ export default function CheckoutPage() {
                 type="number"
                 name="phone"
                 pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
-                placeholder="Telefono"
+                placeholder="Telefono*"
                 value={shippingData.phone}
                 onChange={handlerShippingDataChange}
                 className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
@@ -208,7 +231,7 @@ export default function CheckoutPage() {
             <input
               type="text"
               name="address"
-              placeholder="Indirizzo"
+              placeholder="Indirizzo*"
               value={shippingData.address}
               onChange={handlerShippingDataChange}
               className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
@@ -218,7 +241,7 @@ export default function CheckoutPage() {
               <input
                 type="text"
                 name="country"
-                placeholder="Nazione"
+                placeholder="Nazione*"
                 value={shippingData.country}
                 onChange={handlerShippingDataChange}
                 className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
@@ -227,7 +250,7 @@ export default function CheckoutPage() {
               <input
                 type="text"
                 name="city"
-                placeholder="Città"
+                placeholder="Città*"
                 value={shippingData.city}
                 onChange={handlerShippingDataChange}
                 className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
@@ -236,7 +259,7 @@ export default function CheckoutPage() {
               <input
                 type="text"
                 name="zipCode"
-                placeholder="Codice postale"
+                placeholder="Codice postale*"
                 value={shippingData.zipCode}
                 onChange={handlerShippingDataChange}
                 className="border border-neutral-300 p-2 rounded mb-2 bg-white/80 w-full"
@@ -246,25 +269,26 @@ export default function CheckoutPage() {
           </div>
 
           {/* Scelta per la fatturazione */}
-          <label>La fatturazione è uguale all'indirizzo di spedizione:</label>
-          <br />
-          <input
-            type="radio"
-            name="billingOption"
-            value="same"
-            checked={isBillingSameAsShipping}
-            onChange={() => handleBillingOptionChange("same")}
-          />
-          <label> Si</label>
-          <br />
-          <input
-            type="radio"
-            name="billingOption"
-            value="different"
-            checked={isBillingDiffShipping}
-            onChange={() => handleBillingOptionChange("different")}
-          />
-          <label> No</label>
+          <label className="flex items-center gap-2 mb-2">
+            <input
+              type="checkbox"
+              name="billingOption"
+              checked={isBillingSameAsShipping}
+              onChange={() => handleBillingOptionChange("same")}
+              className="form-checkbox"
+            />
+            La fatturazione è uguale all'indirizzo di spedizione
+          </label>
+          <label className="flex items-center gap-2 mb-2">
+            <input
+              type="checkbox"
+              name="billingOption"
+              checked={isBillingDiffShipping}
+              onChange={() => handleBillingOptionChange("different")}
+              className="form-checkbox"
+            />
+            La fatturazione è diversa dall'indirizzo di spedizione
+          </label>
 
           {/* Indirizzo di fatturazione uguale */}
           {isBillingSameAsShipping && (
@@ -288,7 +312,7 @@ export default function CheckoutPage() {
                 <input
                   type="text"
                   name="taxCode"
-                  placeholder="Codice Fiscale"
+                  placeholder="Codice Fiscale*"
                   value={billingData.taxCode}
                   onChange={(e) =>
                     setBillingData((prev) => ({
@@ -326,7 +350,7 @@ export default function CheckoutPage() {
                 <input
                   type="text"
                   name="name"
-                  placeholder="Nome"
+                  placeholder="Nome*"
                   value={billingData.name}
                   onChange={(e) =>
                     setBillingData((prev) => ({
@@ -340,7 +364,7 @@ export default function CheckoutPage() {
                 <input
                   type="text"
                   name="surname"
-                  placeholder="Cognome"
+                  placeholder="Cognome*"
                   value={billingData.surname}
                   onChange={(e) =>
                     setBillingData((prev) => ({
@@ -356,7 +380,7 @@ export default function CheckoutPage() {
                 <input
                   type="email"
                   name="email"
-                  placeholder="E-mail"
+                  placeholder="E-mail*"
                   value={billingData.email}
                   onChange={(e) =>
                     setBillingData((prev) => ({
@@ -370,7 +394,7 @@ export default function CheckoutPage() {
                 <input
                   type="number"
                   name="phone"
-                  placeholder="Telefono"
+                  placeholder="Telefono*"
                   value={billingData.phone}
                   onChange={(e) =>
                     setBillingData((prev) => ({
@@ -385,7 +409,7 @@ export default function CheckoutPage() {
               <input
                 type="text"
                 name="address"
-                placeholder="Indirizzo"
+                placeholder="Indirizzo*"
                 value={billingData.address}
                 onChange={(e) =>
                   setBillingData((prev) => ({
@@ -400,7 +424,7 @@ export default function CheckoutPage() {
                 <input
                   type="text"
                   name="country"
-                  placeholder="Nazione"
+                  placeholder="Nazione*"
                   value={billingData.country}
                   onChange={(e) =>
                     setBillingData((prev) => ({
@@ -414,7 +438,7 @@ export default function CheckoutPage() {
                 <input
                   type="text"
                   name="city"
-                  placeholder="Città"
+                  placeholder="Città*"
                   value={billingData.city}
                   onChange={(e) =>
                     setBillingData((prev) => ({
@@ -428,7 +452,7 @@ export default function CheckoutPage() {
                 <input
                   type="text"
                   name="zipCode"
-                  placeholder="Codice postale"
+                  placeholder="Codice postale*"
                   value={billingData.zipCode}
                   onChange={(e) =>
                     setBillingData((prev) => ({
@@ -444,7 +468,7 @@ export default function CheckoutPage() {
                 <input
                   type="text"
                   name="taxCode"
-                  placeholder="Codice Fiscale"
+                  placeholder="Codice Fiscale*"
                   value={billingData.taxCode}
                   onChange={(e) =>
                     setBillingData((prev) => ({
@@ -471,6 +495,8 @@ export default function CheckoutPage() {
               </div>
             </div>
           )}
+
+          {/* Bottone per il pagamento */}
           <div className="flex justify-end">
             <button
               type="submit"
@@ -481,8 +507,9 @@ export default function CheckoutPage() {
           </div>
         </form>
       </div>
+
       {/* Riepilogo Ordine */}
-      <div className="bg-white/50 p-6 rounded-lg shadow-md">
+      <div className="bg-white/50 p-4 rounded-lg shadow-md">
         <h3 className="text-xl font-semibold mb-3">Riepilogo Ordine</h3>
         <ul>
           {cart.map((product) => (
@@ -512,10 +539,10 @@ export default function CheckoutPage() {
           >
             {isDiscountApplied ? "Codice Valido" : "Applica"}
           </button>
-          {!isDiscountValid && (
-            <div className="text-red-500 mt-2">Codice sconto non valido</div>
-          )}
         </div>
+        {!isDiscountValid && (
+          <p className="text-red-500 mt-2">Codice sconto non valido</p>
+        )}
         <div className="text-xl font-semibold mt-4">
           Totale:{" "}
           {isDiscountApplied ? (

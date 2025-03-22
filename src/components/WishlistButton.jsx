@@ -29,14 +29,16 @@ const WishlistButton = ({ product }) => {
         className="text-gray-600 transition duration-200 hover:text-gray-700 hover:scale-120 cursor-pointer"
         aria-label={
           isInWishlist ? "Rimuovi dal carrello" : "Aggiungi al carrello"
-        }>
+        }
+      >
         {/* Aggiungi le classi condizionali per il cuore pieno o vuoto */}
         <i
           className={`fa${
             isInWishlist ? "s" : "r"
-          } fa-heart text-xl bg-orange-200 p-3 rounded hover:bg-orange-400 transition duration-200 mr-2 ${
+          } fa-heart  bg-orange-200 p-3 w-11 rounded hover:bg-orange-400 transition duration-200 mr-2 ${
             isInWishlist ? "text-gray-500" : "text-gray-500"
-          }`}></i>
+          }`}
+        ></i>
       </button>
     </div>
   );

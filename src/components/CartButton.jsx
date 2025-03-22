@@ -33,7 +33,7 @@ const CartButton = ({ product }) => {
           onClick={handleAddToCart}
           className="text-gray-600 transition duration-200 hover:text-gray-700 hover:scale-120 cursor-pointer"
         >
-          <i className="fa-solid fa-cart-shopping bg-orange-200 p-3 rounded hover:bg-orange-400 transition duration-200 mr-2"></i>
+          <i className="fa-solid fa-cart-shopping bg-orange-200 p-3 w-11 rounded hover:bg-orange-400 transition duration-200 mr-2"></i>
         </button>
       </div>
       {/* Pop-up con effetto fade-in/fade-out */}
