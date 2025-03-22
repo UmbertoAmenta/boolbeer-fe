@@ -67,7 +67,7 @@ export default function Hero() {
 
       {/* Pulsante per l'immagine precedente */}
       <button
-        className="absolute top-50 left-0 mx-2 p-3 hover:cursor-pointer bg-neutral-800 rounded-full text-white text-2xl"
+        className="absolute top-50 left-0 mx-2 px-3 py-2 shadow-md hover:cursor-pointer bg-neutral-700 hover:bg-neutral-900 transition rounded-full text-white text-2xl"
         onClick={prevImageId}
       >
         <i className="fa-solid fa-arrow-left"></i>
@@ -75,7 +75,7 @@ export default function Hero() {
 
       {/* Pulsante per l'immagine successiva */}
       <button
-        className="absolute top-50 right-0 mx-2 p-3 hover:cursor-pointer bg-neutral-800 rounded-full text-white text-2xl"
+        className="absolute top-50 right-0 mx-2 px-3 py-2 shadow-md hover:cursor-pointer bg-neutral-700 hover:bg-neutral-900 transition rounded-full text-white text-2xl"
         onClick={nextImageId}
       >
         <i className="fa-solid fa-arrow-right"></i>
