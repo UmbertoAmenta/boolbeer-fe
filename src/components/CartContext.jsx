@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
 import axios from "../api/axios";
 
 const CartContext = createContext();
@@ -43,7 +49,7 @@ export const CartProvider = ({ children }) => {
     initializeCart();
   }, []);
 
-  // Funzione per aggiungere un prodotto
+  // Le altre funzioni (addToCart, incrementQuantity, decrementQuantity, removeFromCart, completeOrder) restano invariate...
   const addToCart = async (product, quantity) => {
     try {
       await axios.post("/cart/add", {
@@ -51,7 +57,6 @@ export const CartProvider = ({ children }) => {
         productId: product.product_id || product.id,
         quantity,
       });
-      // Aspetta un attimo e ricarica il carrello
       await delay(100);
       await refreshCart(cartId);
     } catch (error) {
@@ -59,7 +64,6 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  // Incrementa la quantità
   const incrementQuantity = async (productId) => {
     try {
       await axios.post("/cart/add", {
@@ -74,7 +78,6 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  // Decrementa la quantità o rimuove il prodotto
   const decrementQuantity = async (productId, currentQuantity) => {
     try {
       if (currentQuantity > 1) {
@@ -93,7 +96,6 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  // Rimuove un prodotto dal carrello
   const removeFromCart = async (productId) => {
     try {
       await axios.delete("/cart/remove", {
@@ -106,7 +108,6 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  // Completa l'ordine (non svuota il carrello sul frontend)
   const completeOrder = async (cartId) => {
     try {
       await axios.post("/cart/complete", { cartId });
@@ -117,12 +118,12 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  // Funzione per svuotare il carrello sul frontend
-  const clearCart = () => {
+  // Memorizziamo clearCart in modo che non cambi ad ogni render
+  const clearCart = useCallback(() => {
     setCart([]);
     setCartId(null);
     localStorage.removeItem("cartId");
-  };
+  }, []);
 
   return (
     <CartContext.Provider

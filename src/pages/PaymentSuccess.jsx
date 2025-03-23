@@ -1,17 +1,23 @@
 import { useEffect } from "react";
 import { useCart } from "../components/CartContext";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function PaymentSuccess() {
+  const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const sessionId = queryParams.get("session_id");
   const { clearCart } = useCart();
 
   useEffect(() => {
-    // Svuota il carrello al montaggio della pagina di conferma
+    // Svuota il carrello
     clearCart();
-  }, [clearCart]);
+    // Dopo 3 secondi, reindirizza alla home page
+    const timer = setTimeout(() => {
+      navigate("/");
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [clearCart, navigate]);
 
   return (
     <div className="p-6 max-w-xl mx-auto text-center">
@@ -21,6 +27,7 @@ export default function PaymentSuccess() {
       ) : (
         <p>Grazie per aver effettuato il pagamento.</p>
       )}
+      <p>Verrai reindirizzato alla home page a breve.</p>
     </div>
   );
 }
