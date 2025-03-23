@@ -24,7 +24,7 @@ export default function ContactUs() {
       <p className="mb-4">
         <strong>Social Media</strong>: Seguici e scrivici su{" "}
         <a href="https://www.facebook.com/">Facebook</a>,{" "}
-        <a href="https://x.com/">Twitter</a> e{" "}
+        <a href="https://x.com/">X</a> e{" "}
         <a href="https://www.instagram.com/">Instagram</a>! Non promettiamo
         sobrietà nei DM, ma divertimento sì.
       </p>
