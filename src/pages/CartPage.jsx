@@ -13,7 +13,7 @@ export default function CartPage() {
 
   if (cart.length === 0) {
     return (
-      <div className="mt-12 flex flex-col items-center">
+      <div className="mt-12 flex flex-col items-center pb-8">
         <Link to="/search">
           <img
             src="https://cdn-icons-png.flaticon.com/512/11329/11329060.png"
@@ -41,7 +41,8 @@ export default function CartPage() {
           {cart.map((item) => (
             <li
               key={item.product_id}
-              className="flex justify-between items-center bg-white my-2 px-4 rounded-lg shadow-md">
+              className="flex justify-between items-center bg-white my-2 px-4 rounded-lg shadow-md"
+            >
               <Link to={`/product/${generateSlug(item.name)}`}>
                 <div className="flex items-center gap-4">
                   <img
@@ -62,12 +63,14 @@ export default function CartPage() {
                   onClick={() =>
                     decrementQuantity(item.product_id, item.quantity)
                   }
-                  className="text-gray-800 hover:text-gray-600 cursor-pointer text-2xl">
+                  className="text-gray-800 hover:text-gray-600 cursor-pointer text-2xl"
+                >
                   <i className="fa-solid fa-minus"></i>
                 </button>
                 <button
                   onClick={() => incrementQuantity(item.product_id)}
-                  className="text-gray-800 hover:text-gray-600 cursor-pointer text-2xl">
+                  className="text-gray-800 hover:text-gray-600 cursor-pointer text-2xl"
+                >
                   <i className="fa-solid fa-plus"></i>
                 </button>
               </div>
