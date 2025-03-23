@@ -16,6 +16,7 @@ import WishlistPage from "./pages/WishlistPage";
 import AboutUs from "./pages/AboutUs";
 import ContactUs from "./pages/ContactUs";
 import PageNotFound from "./pages/PageNotFound";
+import PaymentSuccess from "./pages/PaymentSuccess"; // Importa il nuovo componente
 
 export default function App() {
   const [isVerified, setIsVerified] = useState(null);
@@ -57,6 +58,8 @@ export default function App() {
                 <Route path="/about" element={<AboutUs />} />
                 <Route path="/contact" element={<ContactUs />} />
                 <Route path="/wishlist" element={<WishlistPage />} />
+
+                <Route path="/success" element={<PaymentSuccess />} />
                 <Route path="/*" element={<PageNotFound />} />
               </Route>
               <Route path="*" element={<PageNotFound />} />

@@ -106,14 +106,35 @@ export const CartProvider = ({ children }) => {
     }
   };
 
+  // Completa l'ordine (non svuota il carrello sul frontend)
+  const completeOrder = async (cartId) => {
+    try {
+      await axios.post("/cart/complete", { cartId });
+      await delay(100);
+      await refreshCart(cartId);
+    } catch (error) {
+      console.error("Errore durante la finalizzazione dell'ordine:", error);
+    }
+  };
+
+  // Funzione per svuotare il carrello sul frontend
+  const clearCart = () => {
+    setCart([]);
+    setCartId(null);
+    localStorage.removeItem("cartId");
+  };
+
   return (
     <CartContext.Provider
       value={{
         cart,
+        cartId,
         addToCart,
         removeFromCart,
         incrementQuantity,
         decrementQuantity,
+        completeOrder,
+        clearCart,
       }}
     >
       {children}
