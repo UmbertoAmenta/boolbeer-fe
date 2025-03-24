@@ -31,20 +31,22 @@ export default function SearchBar() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <input
-        className="rounded-l-2xl p-2 w-40 bg-white/40 items-center"
-        name="search"
-        type="search"
-        placeholder="Cerca prodotti..."
-        value={search}
-        onChange={handleSearch}
-      />
-      <button
-        className="hover:cursor-pointer p-2 bg-orange-400 hover:bg-orange-500 transition duration-300 rounded-r-2xl"
-        type="submit"
-      >
-        <i className="fa-solid fa-magnifying-glass"></i>
-      </button>
+      <div>
+        <input
+          className="rounded-l-2xl p-2 w-20 sm:w-40 md:w-40 bg-white/40 items-center"
+          name="search"
+          type="search"
+          placeholder="Cerca prodotti..."
+          value={search}
+          onChange={handleSearch}
+        />
+        <button
+          className="hover:cursor-pointer p-2 bg-orange-400 hover:bg-orange-500 transition duration-300 rounded-r-2xl"
+          type="submit"
+        >
+          <i className="fa-solid fa-magnifying-glass"></i>
+        </button>
+      </div>
     </form>
   );
 }

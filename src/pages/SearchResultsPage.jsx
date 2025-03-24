@@ -38,7 +38,13 @@ export default function SearchResultsPage() {
 
   return (
     <div className="container xl:max-w-320 mx-auto px-4">
-      <div className="py-4 text-xl flex items-center justify-evenly">
+      <div className="py-4 text-xl flex items-center justify-between">
+        <div>
+          <p className="py-2">
+            <span className="font-semibold">N° risultati ricerca:</span>{" "}
+            {sortedProducts.length}
+          </p>
+        </div>
         <div>
           <label className="font-semibold">Ordina per:</label>
           <select
@@ -59,10 +65,6 @@ export default function SearchResultsPage() {
             <option value="desc">Discendente</option>
           </select>
         </div>
-        <p className="py-2">
-          <span className="font-semibold">N° risultati ricerca:</span>{" "}
-          {sortedProducts.length}
-        </p>
       </div>
       {sortedProducts.length > 0 ? ( // Se ci sono risultati, mostra la lista dei prodotti
         <div>
