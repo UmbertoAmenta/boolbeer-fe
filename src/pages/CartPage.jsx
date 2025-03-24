@@ -1,57 +1,92 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { Link } from "react-router-dom";
 import { useCart } from "../components/CartContext";
-
+import { generateSlug } from "../utils/slug";
 export default function CartPage() {
-  const { cart, removeFromCart, incrementQuantity, decrementQuantity } =
-    useCart();
+  const { cart, incrementQuantity, decrementQuantity } = useCart();
 
-  const handleRemoveFromCart = (productId, quantity) => {
-    removeFromCart(productId, quantity);
-  };
+  // Calcola il totale dell'ordine
+  const total = cart
+    .reduce((acc, item) => acc + item.price * item.quantity, 0)
+    .toFixed(2);
+  const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+  if (cart.length === 0) {
+    return (
+      <div className="mt-12 flex flex-col items-center pb-8">
+        <Link to="/search">
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/11329/11329060.png"
+            alt="carrello vuoto"
+            className="w-100 animate-pulse"
+          />
+        </Link>
+        <p className="text-gray-500">
+          Il carrello è vuoto. Aggiungi almeno un articolo prima di procedere al
+          check-out!
+        </p>
+      </div>
+    );
+  }
+
   return (
-    <div className="max-w-6xl mx-auto p-4">
-      <div className="bg-gray-100 p-6 rounded-lg shadow-md mb-6">
+    <div className="max-w-6xl mx-auto py-8 px-4">
+      <div className="bg-white/50 p-6 rounded-lg shadow-md">
         <h2 className="text-2xl mb-4 font-bold">Il tuo carrello</h2>
-        {cart.length === 0 ? (
-          <p className="text-gray-500">Il carrello è vuoto.</p>
-        ) : (
-          <ul>
-            {cart.map((item) => (
-              <li
-                key={item.id}
-                className="flex justify-between items-center mb-4 border-b pb-4">
-                <div className="flex flex-col">
+        <p className="text-xl mb-4">
+          Elementi nel tuo carrello: {totalQuantity}
+        </p>
+
+        <ul>
+          {cart.map((item) => (
+            <li
+              key={item.product_id}
+              className="flex justify-between items-center bg-white my-2 px-4 rounded-lg shadow-md"
+            >
+              <Link to={`/product/${generateSlug(item.name)}`}>
+                <div className="flex items-center gap-4">
                   <img
-                    src={`http://localhost:3000/imgs/${item.product_image}`}
-                    alt={item.product_name}
-                    className="h-100 object-contain"
+                    src={`http://localhost:3000/imgs/${item.image}`}
+                    alt={item.name}
+                    className="h-20 w-20 py-1 object-contain"
                   />
-                  <strong className="text-lg">{item.product_name}</strong>
-                  <span>
-                    {item.quantity} x €{item.product_price}
-                  </span>
+                  <div>
+                    <h2 className="text-lg font-bold">{item.name}</h2>
+                    <h3>
+                      {item.quantity} x {item.price}€
+                    </h3>
+                  </div>
                 </div>
-                <div className="flex items-center space-x-4">
-                  <button
-                    onClick={() => incrementQuantity(item.id)}
-                    className="text-gray-800 hover:text-gray-600 cursor-pointer text-2xl mr-2">
-                    <i className="fa-solid fa-plus"></i>
-                  </button>
-                  <button
-                    onClick={() => decrementQuantity(item.id)}
-                    className="text-gray-800 hover:text-gray-600 text-2xl cursor-pointer mr-2">
-                    <i className="fa-solid fa-minus"></i>
-                  </button>
-                  <button
-                    onClick={() => handleRemoveFromCart(item.id, item.quantity)}
-                    className="text-red-600 hover:text-red-800 cursor-pointer font-semibold">
-                    Rimuovi
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
+              </Link>
+              <div className="flex items-center space-x-4">
+                <button
+                  onClick={() =>
+                    decrementQuantity(item.product_id, item.quantity)
+                  }
+                  className="text-gray-800 hover:text-gray-600 cursor-pointer text-2xl"
+                >
+                  <i className="fa-solid fa-minus"></i>
+                </button>
+                <button
+                  onClick={() => incrementQuantity(item.product_id)}
+                  className="text-gray-800 hover:text-gray-600 cursor-pointer text-2xl"
+                >
+                  <i className="fa-solid fa-plus"></i>
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+        <div className="flex items-start justify-between mt-6">
+          <div className="text-xl font-semibold">
+            Totale: <span className="font-bold">{total}€</span>
+          </div>
+          <Link to="/checkout">
+            <button className="font-normaltext-neutral-800 transition duration-200 hover:text-neutral-900 cursor-pointer bg-orange-200 hover:bg-orange-400 p-2 rounded">
+              Procedi al pagamento
+            </button>
+          </Link>
+        </div>
       </div>
     </div>
   );
