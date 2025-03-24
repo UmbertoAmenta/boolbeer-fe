@@ -13,11 +13,8 @@ export default function PageNotFound() {
         <p className="text-xl text-gray-600">
           Oops! La pagina che stai cercando non esiste.
         </p>
-        <button
-          href="/"
-          className="px-6 py-3 bg-orange-500 text-white text-lg font-semibold rounded-lg hover:bg-orange-400 transition duration-300 cursor-pointer"
-        >
-          Torna alla Home
+        <button className="px-6 py-3 bg-orange-500 text-white text-lg font-semibold rounded-lg hover:bg-orange-400 transition duration-300 cursor-pointer">
+          <Link to="/">Torna alla Home</Link>
         </button>
       </div>
     </div>
